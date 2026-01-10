@@ -1,6 +1,6 @@
-/* ========================
-PART 1 - RESET + TYPOGRAPHY (~100 lines)
-======================== */
+/* ===============================
+RESET & BASE
+=============================== */
 
 * {
     margin: 0;
@@ -10,74 +10,48 @@ PART 1 - RESET + TYPOGRAPHY (~100 lines)
 
 body {
     font-family: system-ui, sans-serif;
+    background: radial-gradient(circle at top, #1d2150, #0b0e1a);
     color: #fff;
-    background: #0b0e1a;
     overflow: hidden;
-}
-
-h1,
-h2 {
-    margin-bottom: 16px;
-    text-align: center;
-    letter-spacing: 1px;
-}
-
-p {
-    opacity: .8;
 }
 
 .screen {
     display: none;
     min-height: 100vh;
-    padding: 24px;
+    padding: 20px;
+    animation: fadeIn 0.5s ease forwards;
 }
 
 .screen.active {
     display: block;
 }
 
+h1,
+h2 {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+p {
+    opacity: 0.8;
+}
+
 button {
     cursor: pointer;
-    transition: all .25s ease;
-}
-
-
-/* Additional typography utilities */
-
-.text-center {
-    text-align: center;
-}
-
-.text-bold {
-    font-weight: 800;
-}
-
-.text-small {
-    font-size: .8rem;
-}
-
-
-/* ========================
-PART 2 - BUTTONS / GRID (~150 lines)
-======================== */
-
-button {
-    width: 100%;
-    padding: 16px;
-    border-radius: 16px;
-    border: none;
     font-weight: 800;
     color: white;
-    background: linear-gradient(135deg, #6c63ff, #4a44c9);
+    border: none;
+    border-radius: 16px;
+    transition: all 0.25s ease;
 }
 
 button:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, .6);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
 }
 
 button:active {
-    transform: scale(.94);
+    transform: scale(0.95);
 }
 
 .number-grid {
@@ -90,272 +64,16 @@ button:active {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 14px;
-}
-
-#categoryGrid button {
-    background: linear-gradient(135deg, #22265a, #181c44);
-}
-
-
-/* ========================
-PART 3 - FULLSCREEN DRAG CARD (~200 lines)
-======================== */
-
-#fullscreenReveal {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-}
-
-#wordLayer {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    font-weight: 900;
-    letter-spacing: 2px;
-    background: #0f1335;
-}
-
-#dragLayer {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
-}
-
-#dragLayer span {
-    text-shadow: 0 2px 6px rgba(0, 0, 0, .6);
-}
-
-
-/* Player colors */
-
-.player-0 #dragLayer {
-    background: linear-gradient(135deg, #ff6b6b, #c44569);
-}
-
-.player-1 #dragLayer {
-    background: linear-gradient(135deg, #feca57, #ff9f43);
-}
-
-.player-2 #dragLayer {
-    background: linear-gradient(135deg, #1dd1a1, #10ac84);
-}
-
-.player-3 #dragLayer {
-    background: linear-gradient(135deg, #54a0ff, #2e86de);
-}
-
-.player-4 #dragLayer {
-    background: linear-gradient(135deg, #5f27cd, #341f97);
-}
-
-.player-5 #dragLayer {
-    background: linear-gradient(135deg, #00d2d3, #01a3a4);
-}
-
-.player-6 #dragLayer {
-    background: linear-gradient(135deg, #ff9ff3, #f368e0);
-}
-
-.player-7 #dragLayer {
-    background: linear-gradient(135deg, #48dbfb, #0abde3);
-}
-
-
-/* ========================
-PART 4 - ANIMATIONS (~200 lines)
-======================== */
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: none;
-    }
-}
-
-@keyframes pulse {
-    0%,
-    100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-}
-
-@keyframes glowPulse {
-    0%,
-    100% {
-        box-shadow: 0 0 20px rgba(255, 255, 255, .2);
-    }
-    50% {
-        box-shadow: 0 0 40px rgba(255, 255, 255, .5);
-    }
-}
-
-
-/* Hover & press animations */
-
-button:hover {
-    animation: buttonPulse .4s forwards;
-}
-
-@keyframes buttonPulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.03);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-
-/* Drag layer glow */
-
-#dragLayer:hover {
-    box-shadow: 0 0 30px rgba(255, 255, 255, .5);
-}
-
-
-/* ========================
-PART 5 - STARTER SCREEN + EXTRA (~350 lines)
-======================== */
-
-#starterCard {
-    margin: 40px auto;
-    width: 260px;
-    height: 140px;
-    border-radius: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    font-weight: 900;
-    background: linear-gradient(135deg, gold, orange);
-    animation: pulse 1.5s infinite;
-}
-
-#fullscreenReveal::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, .3), transparent);
-    pointer-events: none;
-}
-
-#dragLayer span {
-    text-shadow: 0 2px 10px rgba(0, 0, 0, .8);
-}
-
-#wordLayer span {
-    text-shadow: 0 2px 10px rgba(0, 0, 0, .8);
-}
-
-button {
-    letter-spacing: 1px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .5);
-}
-
-
-/* =========================
-PART 2 - GRID LAYOUTS, PANELS, CARDS
-========================= */
-
-
-/* Fullscreen reveal container */
-
-#fullscreenReveal {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #0b0e1a;
-}
-
-
-/* Word Layer */
-
-#wordLayer {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    font-weight: 900;
-    letter-spacing: 2px;
-    background: #0f1335;
-    color: white;
-    text-align: center;
-}
-
-
-/* Drag Layer */
-
-#dragLayer {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    cursor: grab;
-    transition: transform 0.35s cubic-bezier(.34, 1.56, .64, 1);
-    color: white;
-}
-
-
-/* Drag Layer Text Shadow */
-
-#dragLayer span {
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
-}
-
-
-/* Category Grid */
-
-#categoryGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
     padding: 10px;
 }
-
-
-/* Category Buttons */
 
 #categoryGrid button {
     padding: 20px;
     font-size: 1rem;
-    border-radius: 16px;
-    text-align: center;
     background: linear-gradient(135deg, #22265a, #181c44);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     transition: all 0.25s ease;
 }
-
-
-/* Category Button Hover */
 
 #categoryGrid button:hover {
     transform: scale(1.05);
@@ -363,35 +81,67 @@ PART 2 - GRID LAYOUTS, PANELS, CARDS
 }
 
 
-/* Hint Text */
+/* ===============================
+FULLSCREEN DRAG CARD
+=============================== */
+
+#fullscreenReveal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background: transparent;
+}
+
+#wordLayer {
+    position: relative;
+    height: 60%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: white;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    text-align: center;
+}
+
+#dragLayer {
+    position: relative;
+    width: 100%;
+    height: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    cursor: grab;
+    z-index: 2;
+    touch-action: none;
+    color: white;
+    transition: transform 0.35s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+.word-revealed {
+    opacity: 1 !important;
+}
 
 .hint {
     text-align: center;
     margin-top: 12px;
-    opacity: 0.7;
     font-size: 0.9rem;
+    opacity: 0.7;
 }
 
 
-/* Responsive for small screens */
-
-@media (max-width: 400px) {
-    #categoryGrid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-    #wordLayer {
-        font-size: 2.4rem;
-    }
-    #dragLayer {
-        font-size: 1rem;
-    }
-}
-
-
-/* =========================
-PART 3 - PLAYER CARD COLORS
-========================= */
+/* ===============================
+PLAYER COLORS
+=============================== */
 
 .player-0 #dragLayer {
     background: linear-gradient(135deg, #ff6b6b, #c44569);
@@ -426,169 +176,9 @@ PART 3 - PLAYER CARD COLORS
 }
 
 
-/* Word Layer Hover Glow */
-
-#wordLayer:hover {
-    box-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
-    transition: box-shadow 0.3s ease-in-out;
-}
-
-
-/* Drag Layer Shadow on Press */
-
-#dragLayer:active {
-    box-shadow: 0 0 60px rgba(255, 255, 255, 0.5);
-    transform: scale(0.98);
-}
-
-
-/* Category Buttons Gradient Variants */
-
-#categoryGrid button.cat-food {
-    background: linear-gradient(135deg, #ff6b6b, #ff8787);
-}
-
-#categoryGrid button.cat-places {
-    background: linear-gradient(135deg, #1dd1a1, #48dbfb);
-}
-
-#categoryGrid button.cat-animals {
-    background: linear-gradient(135deg, #ff9ff3, #f368e0);
-}
-
-#categoryGrid button.cat-movies {
-    background: linear-gradient(135deg, #54a0ff, #2e86de);
-}
-
-#categoryGrid button.cat-jobs {
-    background: linear-gradient(135deg, #feca57, #ff9f43);
-}
-
-#categoryGrid button.cat-sports {
-    background: linear-gradient(135deg, #5f27cd, #341f97);
-}
-
-#categoryGrid button.cat-objects {
-    background: linear-gradient(135deg, #00d2d3, #01a3a4);
-}
-
-#categoryGrid button.cat-emotions {
-    background: linear-gradient(135deg, #ff6b6b, #c44569);
-}
-
-#categoryGrid button.cat-activities {
-    background: linear-gradient(135deg, #1dd1a1, #10ac84);
-}
-
-#categoryGrid button.cat-technology {
-    background: linear-gradient(135deg, #48dbfb, #0abde3);
-}
-
-
-/* Category Button Shadows */
-
-#categoryGrid button:active {
-    transform: scale(0.97);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
-}
-
-
-/* Player Label Styling */
-
-#playerTitle {
-    font-size: 1.6rem;
-    font-weight: 800;
-    margin-bottom: 10px;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-
-/* =========================
-PART 4 - ANIMATIONS AND MOTION
-========================= */
-
-
-/* Screen Fade-In */
-
-@keyframes screenEnter {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: none;
-    }
-}
-
-.screen {
-    animation: screenEnter 0.6s ease;
-}
-
-
-/* Pulse Animation */
-
-@keyframes pulse {
-    0%,
-    100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-}
-
-#starterCard {
-    animation: pulse 1.5s infinite;
-}
-
-
-/* Glow Pulse */
-
-@keyframes glowPulse {
-    0%,
-    100% {
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-    }
-    50% {
-        box-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
-    }
-}
-
-
-/* Drag Layer Hover Pulse */
-
-#dragLayer:hover {
-    animation: glowPulse 1.2s infinite alternate;
-}
-
-
-/* Button Hover Pulse */
-
-button:hover {
-    animation: glowPulse 0.8s infinite alternate;
-}
-
-
-/* Reveal Layer Transition */
-
-#wordLayer,
-#dragLayer {
-    transition: transform 0.35s cubic-bezier(.34, 1.56, .64, 1), box-shadow 0.25s ease;
-}
-
-
-/* Starter Card Hover Shadow */
-
-#starterCard:hover {
-    box-shadow: 0 0 60px rgba(255, 223, 0, 0.7);
-    transform: scale(1.03);
-}
-
-
-/* =========================
-PART 5 - STARTER SCREEN AND EXTRA EFFECTS
-========================= */
+/* ===============================
+STARTER SCREEN
+=============================== */
 
 #starterCard {
     width: 260px;
@@ -603,43 +193,13 @@ PART 5 - STARTER SCREEN AND EXTRA EFFECTS
     margin: 40px auto;
     text-align: center;
     box-shadow: 0 10px 30px rgba(255, 223, 0, 0.6);
+    animation: glowStarter 1.5s infinite alternate;
 }
 
 
-/* Fullscreen Overlay for Drag Layer */
-
-#fullscreenReveal::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
-    pointer-events: none;
-}
-
-
-/* Drag Text Shadow */
-
-#dragLayer span {
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-}
-
-
-/* Word Layer Shadow */
-
-#wordLayer span {
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-}
-
-
-/* Button Extra Shadow */
-
-button {
-    letter-spacing: 1px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-}
-
-
-/* Starter Card Glow Animation */
+/* ===============================
+ANIMATIONS
+=============================== */
 
 @keyframes glowStarter {
     0%,
@@ -651,135 +211,60 @@ button {
     }
 }
 
-#starterCard {
-    animation: glowStarter 1.5s infinite alternate;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
 }
 
 
-/* Responsive tweaks */
+/* Drag layer hover glow */
 
-@media (max-width: 450px) {
-    #starterCard {
-        width: 200px;
-        height: 120px;
-        font-size: 1.6rem;
-    }
+#dragLayer:hover {
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+
+/* Word Layer glow */
+
+#wordLayer span {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+
+/* Category Button Shadows */
+
+#categoryGrid button:active {
+    transform: scale(0.97);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+
+
+/* ===============================
+RESPONSIVE
+=============================== */
+
+@media(max-width:450px) {
     #wordLayer {
-        font-size: 2.2rem;
+        font-size: 2.4rem;
+        padding-bottom: 40px;
     }
     #dragLayer {
         font-size: 1rem;
     }
-}
-
-
-/* =========================
-PART 6 - UTILITIES, EXTRA VISUALS
-========================= */
-
-
-/* Utilities */
-
-.text-center {
-    text-align: center;
-}
-
-.text-bold {
-    font-weight: 800;
-}
-
-.text-small {
-    font-size: 0.8rem;
-}
-
-.shadow-lg {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-
-/* Drag Layer Gradient Variants */
-
-.drag-gradient-1 {
-    background: linear-gradient(135deg, #ff6b6b, #ff8787);
-}
-
-.drag-gradient-2 {
-    background: linear-gradient(135deg, #1dd1a1, #48dbfb);
-}
-
-.drag-gradient-3 {
-    background: linear-gradient(135deg, #ff9ff3, #f368e0);
-}
-
-.drag-gradient-4 {
-    background: linear-gradient(135deg, #54a0ff, #2e86de);
-}
-
-.drag-gradient-5 {
-    background: linear-gradient(135deg, #feca57, #ff9f43);
-}
-
-.drag-gradient-6 {
-    background: linear-gradient(135deg, #5f27cd, #341f97);
-}
-
-.drag-gradient-7 {
-    background: linear-gradient(135deg, #00d2d3, #01a3a4);
-}
-
-.drag-gradient-8 {
-    background: linear-gradient(135deg, #48dbfb, #0abde3);
-}
-
-
-/* Extra hover animations for cards */
-
-#fullscreenReveal:hover #dragLayer {
-    animation: glowPulse 1.5s infinite alternate;
-}
-
-#categoryGrid button:hover {
-    transform: scale(1.07);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
-}
-
-
-/* Gradient overlays */
-
-#fullscreenReveal::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(45deg, rgba(255, 255, 255, 0.05), transparent);
-    pointer-events: none;
-}
-
-
-/* Starter card pseudo elements */
-
-#starterCard::before {
-    content: "★";
-    position: absolute;
-    font-size: 3rem;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: gold;
-    opacity: 0.5;
-}
-
-
-/* More responsive adjustments */
-
-@media (max-width:380px) {
-    #dragLayer {
-        font-size: .9rem;
-    }
-    #wordLayer {
-        font-size: 2rem;
-    }
     #categoryGrid button {
         padding: 14px;
-        font-size: .9rem;
+        font-size: .95rem;
+    }
+    #starterCard {
+        width: 200px;
+        height: 120px;
+        font-size: 1.6rem;
     }
 }
