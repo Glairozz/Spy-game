@@ -37,7 +37,7 @@ const PLAYER_COLORS = [
 
 /* =======================
    STATE
-   ======================= */
+======================= */
 let playerCount = 4;
 let roles = [];
 let currentPlayer = 0;
@@ -70,34 +70,19 @@ function loadCategories() {
     const grid = document.getElementById("categoryGrid");
     grid.innerHTML = "";
     
-    console.log("Loading categories:", Object.keys(CATEGORIES));
-    
     Object.keys(CATEGORIES).forEach(cat => {
         const btn = document.createElement("button");
         btn.textContent = cat;
-        btn.onclick = () => {
-            console.log("Category selected:", cat);
-            startGame(cat);
-        };
+        btn.onclick = () => startGame(cat);
         grid.appendChild(btn);
     });
-    
-    console.log("Categories loaded. Grid has", grid.children.length, "buttons");
 }
 
 /* =======================
    START GAME
-   ======================= */
+======================= */
 function startGame(category) {
-    console.log("=== STARTING GAME ===");
-    console.log("Selected category:", category);
-    console.log("Available categories:", Object.keys(CATEGORIES));
-    console.log("Words in category:", CATEGORIES[category]);
-    
-    if (!CATEGORIES[category]) {
-        console.error("Category not found:", category);
-        return;
-    }
+    if (!CATEGORIES[category]) return;
     
     const words = CATEGORIES[category];
     const sameWord = words[Math.floor(Math.random() * words.length)];
@@ -110,9 +95,6 @@ function startGame(category) {
     spyIndex = Math.floor(Math.random() * playerCount);
     roles[spyIndex] = differentWord;
 
-    
-
-    // Initialize scores if not already done
     for (let i = 1; i <= playerCount; i++) {
         if (!scores[`Player ${i}`]) {
             scores[`Player ${i}`] = 0;
@@ -135,13 +117,12 @@ function applyPlayerColor(index) {
 
 /* =======================
    DRAG REVEAL
-   ======================= */
+======================= */
 const dragLayer = document.getElementById("dragLayer");
 const wordText = document.getElementById("wordText");
 let startY = 0;
 let isRevealed = false;
 
-// Set word immediately when interaction starts
 dragLayer.addEventListener("touchstart", e => { 
     startY = e.touches[0].clientY; 
     wordText.textContent = roles[currentPlayer];
@@ -152,11 +133,12 @@ dragLayer.addEventListener("mousedown", e => {
     wordText.textContent = roles[currentPlayer];
 });
 
-// Drag to reveal
 dragLayer.addEventListener("touchmove", e => {
     const diff = e.touches[0].clientY - startY;
+    const revealAmount = Math.min(Math.abs(diff) / 2, 100);
     if (diff < -30) {
         dragLayer.style.transform = `translateY(${diff}px)`;
+        wordText.style.opacity = (revealAmount / 100).toString();
         isRevealed = true;
     }
 });
@@ -164,96 +146,8 @@ dragLayer.addEventListener("touchmove", e => {
 dragLayer.addEventListener("mousemove", e => {
     if (e.buttons === 1) {
         const diff = e.clientY - startY;
+        const revealAmount = Math.min(Math.abs(diff) / 2, 100);
         if (diff < -30) {
-            dragLayer.style.transform = `translateY(${diff}px)`;
-            isRevealed = true;
-        }
-    }
-});
-
-// Keep drag layer up when drag ends
-dragLayer.addEventListener("touchend", () => {
-    dragLayer.style.transform = "translateY(-120%)";
-    isRevealed = true;
-});
-
-dragLayer.addEventListener("mouseup", () => {
-    dragLayer.style.transform = "translateY(-120%)";
-    isRevealed = true;
-});
-
-// Click to toggle reveal
-dragLayer.addEventListener("click", () => {
-    if (!isRevealed) {
-        wordText.textContent = roles[currentPlayer];
-        dragLayer.style.transform = "translateY(-120%)";
-        isRevealed = true;
-    } else {
-        dragLayer.style.transform = "translateY(0)";
-        wordText.textContent = "";
-        isRevealed = false;
-    }
-});
-
-dragLayer.addEventListener("touchend", () => {
-    // Keep drag layer moved up and word visible
-    dragLayer.style.transform = "translateY(-100%)";
-    wordText.style.opacity = "1";
-    isRevealed = true;
-    console.log(`Touch end - word should be visible: ${wordText.textContent}`);
-});
-
-// Mouse events for desktop
-dragLayer.addEventListener("mousemove", e => {
-    if (e.buttons === 1) { // Left mouse button is pressed
-        const diff = e.clientY - startY;
-        if (diff < -30) { // Start revealing after 30px drag
-            dragLayer.style.transform = `translateY(${diff}px)`;
-            wordText.style.opacity = "1";
-            isRevealed = true;
-        }
-    }
-});
-
-dragLayer.addEventListener("mouseup", () => {
-    // Keep drag layer moved up and word visible
-    dragLayer.style.transform = "translateY(-100%)";
-    wordText.style.opacity = "1";
-    isRevealed = true;
-    console.log(`Mouse up - word should be visible: ${wordText.textContent}`);
-});
-
-dragLayer.addEventListener("touchmove", e => {
-    const diff = e.touches[0].clientY - startY;
-    const revealAmount = Math.min(Math.abs(diff) / 2, 100); // More gradual reveal
-    if (diff < -30) { // Start revealing after 30px drag
-        dragLayer.style.transform = `translateY(${diff}px)`;
-        wordText.style.opacity = (revealAmount / 100).toString();
-        isRevealed = true;
-    }
-});
-
-dragLayer.addEventListener("touchend", () => {
-    // Keep drag layer moved up and word visible
-    dragLayer.style.transform = "translateY(-100%)";
-    wordText.style.opacity = "1";
-    isRevealed = true;
-});
-
-// Mouse events for desktop
-dragLayer.addEventListener("mousedown", e => { 
-    startY = e.clientY;
-    // Set the word immediately when starting drag
-    console.log(`Mouse down - Player ${currentPlayer + 1}, Word: ${roles[currentPlayer]}`);
-    wordText.textContent = roles[currentPlayer];
-    console.log(`Word text set to:`, wordText.textContent);
-});
-
-dragLayer.addEventListener("mousemove", e => {
-    if (e.buttons === 1) { // Left mouse button is pressed
-        const diff = e.clientY - startY;
-        const revealAmount = Math.min(Math.abs(diff) / 2, 100); // More gradual reveal
-        if (diff < -30) { // Start revealing after 30px drag
             dragLayer.style.transform = `translateY(${diff}px)`;
             wordText.style.opacity = (revealAmount / 100).toString();
             isRevealed = true;
@@ -261,14 +155,18 @@ dragLayer.addEventListener("mousemove", e => {
     }
 });
 
-dragLayer.addEventListener("mouseup", () => {
-    // Keep drag layer moved up and word visible
+dragLayer.addEventListener("touchend", () => {
     dragLayer.style.transform = "translateY(-100%)";
     wordText.style.opacity = "1";
     isRevealed = true;
 });
 
-// Click to toggle reveal
+dragLayer.addEventListener("mouseup", () => {
+    dragLayer.style.transform = "translateY(-100%)";
+    wordText.style.opacity = "1";
+    isRevealed = true;
+});
+
 dragLayer.addEventListener("click", () => {
     if (!isRevealed) {
         wordText.textContent = roles[currentPlayer];
@@ -278,108 +176,68 @@ dragLayer.addEventListener("click", () => {
     } else {
         dragLayer.style.transform = "translateY(0)";
         wordText.style.opacity = "0";
-        setTimeout(() => {
-            wordText.textContent = "";
-        }, 300);
+        setTimeout(() => { wordText.textContent = ""; }, 300);
         isRevealed = false;
     }
 });
 
 /* =======================
-   TIMER FUNCTIONS
-   ======================= */
-
-/* =======================
-   TIMER FUNCTIONS (NEW SYSTEM)
-   ======================= */
-
-/* =======================
    NEXT PLAYER
-   ======================= */
+======================= */
 document.getElementById("nextPlayerBtn").onclick = () => {
     currentPlayer++;
     
     if (currentPlayer >= playerCount) {
-        // All players have seen their words - pick starter
         pickStarter();
         return;
     }
     
-    // Reset reveal state for next player
     isRevealed = false;
     wordText.textContent = "";
     dragLayer.style.transform = "translateY(0)";
+    wordText.style.opacity = "0";
     
     applyPlayerColor(currentPlayer);
     document.getElementById("playerTitle").textContent = `Player ${currentPlayer+1}`;
-    
-    // Debug: Log current player's word
-    console.log(`Current Player: ${currentPlayer + 1}, Word: ${roles[currentPlayer]}`);
 };
-
-// Timer button handlers
-// Old timer buttons removed - using new timer system
-
-/* =======================
-   CLEANUP OLD TIMER CODE
-   ======================= */
 
 /* =======================
    SUMMARY SCREEN
-   ======================= */
+======================= */
 function showSummary() {
-    stopTimer();
-    
     const spyPlayerNumber = spyIndex + 1;
     const spyWord = roles[spyIndex];
-    const normalWord = roles.find((word, index) => index !== spyIndex);
     
     document.getElementById("spyPlayer").textContent = `Player ${spyPlayerNumber}`;
     document.getElementById("spyWord").textContent = spyWord;
-    document.getElementById("finalTime").textContent = document.getElementById("timer").textContent;
-    
-    // Calculate points (faster = more points)
-    const points = Math.max(100 - Math.floor(timer / 2), 10);
-    document.getElementById("pointsEarned").textContent = points;
-    
-    // Award points to the spy if they weren't caught (simplified)
-    scores[`Player ${spyPlayerNumber}`] += points;
+    document.getElementById("finalTime").textContent = "0:00";
+    document.getElementById("pointsEarned").textContent = "0";
     
     show("screenSummary");
 }
 
 document.getElementById("nextRoundBtn")?.addEventListener("click", () => {
-    currentRound++;
-    if (currentRound > totalRounds) {
-        endGame();
-    } else {
-        // Reset for new round
-        roles = [];
-        currentPlayer = 0;
-        spyIndex = -1;
-        resetTimer();
-        show("screenCategory");
-    }
+    roles = [];
+    currentPlayer = 0;
+    spyIndex = -1;
+    show("screenCategory");
 });
 
 document.getElementById("endGameBtn")?.addEventListener("click", endGame);
 
 function endGame() {
-    // Show final scores and pick starter for next game
     pickStarter();
 }
 
 /* =======================
    RANDOM STARTER
-   ======================= */
+======================= */
 function pickStarter() {
     const starter = Math.floor(Math.random() * playerCount) + 1;
     document.getElementById("starterName").textContent = `Player ${starter}`;
     show("screenStarter");
     
-    // Add event listener for play again button
     document.getElementById("playAgainBtn").onclick = () => {
-        // Reset game state
         playerCount = 4;
         roles = [];
         currentPlayer = 0;

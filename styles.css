@@ -9,10 +9,26 @@ RESET & BASE
 }
 
 body {
-    font-family: system-ui, sans-serif;
-    background: radial-gradient(circle at top, #1d2150, #0b0e1a);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(ellipse at top, #1d2150 0%, #0b0e1a 50%, #050614 100%);
     color: #fff;
     overflow: hidden;
+    min-height: 100vh;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(102, 126, 234, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(240, 147, 251, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
 }
 
 .screen {
@@ -20,18 +36,17 @@ body {
     min-height: 100vh;
     padding: 20px;
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: scale(0.95) translateY(20px);
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .screen.active {
     display: block;
     opacity: 1;
-    transform: translateY(0);
+    transform: scale(1) translateY(0);
 }
 
-h1,
-h2 {
+h1, h2 {
     text-align: center;
     margin-bottom: 16px;
 }
@@ -82,18 +97,24 @@ button:active {
 .hero-section {
     text-align: center;
     margin-bottom: 40px;
-    animation: slideDown 0.8s ease-out;
+    animation: slideDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 .hero-section h1 {
     font-size: 3rem;
     margin-bottom: 10px;
-    background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
-    background-clip: text;
+    background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #667eea);
+    background-size: 300% 300%;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: none;
-    animation: gradientShift 3s ease-in-out infinite;
+    animation: gradientShift 4s ease-in-out infinite, floatTitle 3s ease-in-out infinite;
+}
+
+@keyframes floatTitle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
 }
 
 @keyframes gradientShift {
@@ -109,7 +130,7 @@ button:active {
 }
 
 .player-selection {
-    animation: fadeInUp 0.8s ease-out 0.3s both;
+    animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
 }
 
 .player-selection h3 {
@@ -117,6 +138,7 @@ button:active {
     margin-bottom: 25px;
     font-size: 1.5rem;
     color: #feca57;
+    animation: fadeIn 0.6s ease-out 0.5s both;
 }
 
 .number-grid {
@@ -125,11 +147,12 @@ button:active {
     gap: 12px;
     max-width: 600px;
     margin: 0 auto;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 25px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 @media (max-width: 600px) {
@@ -153,11 +176,30 @@ button:active {
     font-size: 1.8rem;
     font-weight: 900;
     background: linear-gradient(135deg, #667eea, #764ba2);
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     border: 3px solid transparent;
     position: relative;
     overflow: hidden;
+    animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+
+.player-btn:nth-child(1) { animation-delay: 0.05s; }
+.player-btn:nth-child(2) { animation-delay: 0.1s; }
+.player-btn:nth-child(3) { animation-delay: 0.15s; }
+.player-btn:nth-child(4) { animation-delay: 0.2s; }
+.player-btn:nth-child(5) { animation-delay: 0.25s; }
+.player-btn:nth-child(6) { animation-delay: 0.3s; }
+.player-btn:nth-child(7) { animation-delay: 0.35s; }
+.player-btn:nth-child(8) { animation-delay: 0.4s; }
+.player-btn:nth-child(9) { animation-delay: 0.45s; }
+.player-btn:nth-child(10) { animation-delay: 0.5s; }
+.player-btn:nth-child(11) { animation-delay: 0.55s; }
+.player-btn:nth-child(12) { animation-delay: 0.6s; }
+
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 @media (max-width: 450px) {
@@ -196,25 +238,18 @@ button:active {
 }
 
 @keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-40px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-40px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: none; }
 }
 
 #categoryGrid {
@@ -226,46 +261,67 @@ button:active {
     margin: 0 auto;
 }
 
+#screenCategory > h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    background: linear-gradient(135deg, #667eea, #f093fb);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: fadeInDown 0.5s ease-out both;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 #categoryGrid button {
-    padding: 24px 16px;
-    font-size: 1.1rem;
+    padding: 28px 20px;
+    font-size: 1.15rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #22265a, #181c44);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    background: linear-gradient(145deg, #22265a, #181c44);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     border-radius: 20px;
     text-align: center;
     position: relative;
     overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    animation: fadeInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
 }
 
-#categoryGrid button::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transform: rotate(45deg);
-    transition: all 0.6s;
-    opacity: 0;
-}
-
-#categoryGrid button:hover::after {
-    animation: shimmer 0.6s ease;
-}
+#categoryGrid button:nth-child(1) { animation-delay: 0.05s; }
+#categoryGrid button:nth-child(2) { animation-delay: 0.1s; }
+#categoryGrid button:nth-child(3) { animation-delay: 0.15s; }
+#categoryGrid button:nth-child(4) { animation-delay: 0.2s; }
+#categoryGrid button:nth-child(5) { animation-delay: 0.25s; }
+#categoryGrid button:nth-child(6) { animation-delay: 0.3s; }
+#categoryGrid button:nth-child(7) { animation-delay: 0.35s; }
+#categoryGrid button:nth-child(8) { animation-delay: 0.4s; }
+#categoryGrid button:nth-child(9) { animation-delay: 0.45s; }
+#categoryGrid button:nth-child(10) { animation-delay: 0.5s; }
+#categoryGrid button:nth-child(11) { animation-delay: 0.55s; }
+#categoryGrid button:nth-child(12) { animation-delay: 0.6s; }
+#categoryGrid button:nth-child(13) { animation-delay: 0.65s; }
+#categoryGrid button:nth-child(14) { animation-delay: 0.7s; }
+#categoryGrid button:nth-child(15) { animation-delay: 0.75s; }
 
 #categoryGrid button:hover {
-    transform: translateY(-5px) scale(1.03);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    background: linear-gradient(135deg, #2a2f6a, #1f2344);
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(102, 126, 234, 0.2);
+    background: linear-gradient(145deg, #2a2f6a, #1f2344);
 }
 
+#categoryGrid button:active {
+    transform: translateY(-3px) scale(0.98);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
 
 /* ===============================
 PLAYER CONTROLS
-   =============================== */
+=============================== */
 
 .player-controls {
     display: flex;
@@ -274,23 +330,36 @@ PLAYER CONTROLS
 }
 
 .player-controls button {
-    padding: 16px 32px;
-    font-size: 1.1rem;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-    border-radius: 20px;
-    min-width: 180px;
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    padding: 18px 36px;
+    font-size: 1.15rem;
+    background: linear-gradient(145deg, #667eea, #764ba2);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.35);
+    border-radius: 16px;
+    min-width: 200px;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .player-controls button:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.45);
+}
+
+.player-controls button:active {
+    transform: translateY(-2px) scale(0.98);
 }
 
 /* ===============================
 FULLSCREEN DRAG CARD
-   =============================== */
+=============================== */
+
+#playerTitle {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    font-weight: 800;
+    animation: fadeInDown 0.5s ease-out both;
+}
 
 #fullscreenReveal {
     position: relative;
@@ -303,8 +372,8 @@ FULLSCREEN DRAG CARD
     margin: 20px auto;
     max-width: 400px;
     border-radius: 25px;
-    overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: visible;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
 #wordLayer {
@@ -324,22 +393,29 @@ FULLSCREEN DRAG CARD
     pointer-events: none;
     text-align: center;
     z-index: 0;
-    background: #1a1a2e;
+    background: linear-gradient(145deg, #1e2157, #151840);
     border-radius: 20px;
     margin: 0;
+    box-shadow: inset 0 2px 10px rgba(255, 255, 255, 0.05);
 }
 
 #wordLayer span {
     color: #ffffff;
-    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
     font-weight: 900;
     letter-spacing: 3px;
     padding: 30px;
     border-radius: 15px;
-    background: #ff6b6b;
-    background-clip: text;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
+    animation: wordPulse 2s ease-in-out infinite;
+}
+
+@keyframes wordPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
 }
 
 #dragLayer {
@@ -349,6 +425,7 @@ FULLSCREEN DRAG CARD
     right: 0;
     height: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
@@ -361,83 +438,69 @@ FULLSCREEN DRAG CARD
     background: linear-gradient(135deg, #2a2f6a, #1f2344);
     border-radius: 20px;
     margin: 0;
-    transition: transform 0.3s ease;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+#dragLayer:active {
+    cursor: grabbing;
+}
+
+#dragLayer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: shimmerWave 2s infinite;
+}
+
+@keyframes shimmerWave {
+    0% { left: -100%; }
+    100% { left: 100%; }
 }
 
 #dragLayer:hover {
-    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.2), 0 15px 35px rgba(0, 0, 0, 0.5);
+    transform: translateY(-2px);
 }
 
-@keyframes subtlePulse {
-    0%, 100% {
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-    }
-    50% {
-        box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-    }
+#dragLayer .hint-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    animation: bounceHint 1.5s ease-in-out infinite;
+    display: block;
 }
 
-.word-revealed {
-    opacity: 1 !important;
+@keyframes bounceHint {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
-
-.hint {
-    text-align: center;
-    margin-top: 12px;
-    font-size: 0.9rem;
-    opacity: 0.7;
-}
-
 
 /* ===============================
 PLAYER COLORS
 =============================== */
 
-.player-0 #dragLayer {
-    background: linear-gradient(135deg, #ff6b6b, #c44569);
-}
-
-.player-1 #dragLayer {
-    background: linear-gradient(135deg, #feca57, #ff9f43);
-}
-
-.player-2 #dragLayer {
-    background: linear-gradient(135deg, #1dd1a1, #10ac84);
-}
-
-.player-3 #dragLayer {
-    background: linear-gradient(135deg, #54a0ff, #2e86de);
-}
-
-.player-4 #dragLayer {
-    background: linear-gradient(135deg, #5f27cd, #341f97);
-}
-
-.player-5 #dragLayer {
-    background: linear-gradient(135deg, #00d2d3, #01a3a4);
-}
-
-.player-6 #dragLayer {
-    background: linear-gradient(135deg, #ff9ff3, #f368e0);
-}
-
-.player-7 #dragLayer {
-    background: linear-gradient(135deg, #48dbfb, #0abde3);
-}
-
-
-/* ===============================
-CLEANED UP - TIMER REMOVED
-   =============================== */
+.player-0 #dragLayer { background: linear-gradient(135deg, #ff6b6b, #c44569); }
+.player-1 #dragLayer { background: linear-gradient(135deg, #feca57, #ff9f43); }
+.player-2 #dragLayer { background: linear-gradient(135deg, #1dd1a1, #10ac84); }
+.player-3 #dragLayer { background: linear-gradient(135deg, #54a0ff, #2e86de); }
+.player-4 #dragLayer { background: linear-gradient(135deg, #5f27cd, #341f97); }
+.player-5 #dragLayer { background: linear-gradient(135deg, #00d2d3, #01a3a4); }
+.player-6 #dragLayer { background: linear-gradient(135deg, #ff9ff3, #f368e0); }
+.player-7 #dragLayer { background: linear-gradient(135deg, #48dbfb, #0abde3); }
 
 /* ===============================
 SUMMARY SCREEN
-   =============================== */
+=============================== */
 
 .summary-content {
     max-width: 500px;
     margin: 20px auto;
+    animation: fadeInUp 0.6s ease-out both;
 }
 
 .spy-reveal {
@@ -449,14 +512,22 @@ SUMMARY SCREEN
     margin-bottom: 20px;
     font-size: 1.3rem;
     color: #feca57;
+    animation: fadeIn 0.6s ease-out 0.2s both;
 }
 
 .spy-card {
-    background: linear-gradient(135deg, #22265a, #181c44);
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(145deg, #22265a, #181c44);
+    padding: 25px;
+    border-radius: 24px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 .spy-card span {
@@ -485,18 +556,19 @@ SUMMARY SCREEN
     display: flex;
     justify-content: space-around;
     background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 18px;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    animation: fadeInUp 0.6s ease-out 0.4s both;
 }
 
-.timer-result,
-.score-update {
+.timer-result, .score-update {
     text-align: center;
+    animation: fadeIn 0.5s ease-out 0.5s both;
 }
 
-.timer-result span:last-child,
-.score-update span:last-child {
+.timer-result span:last-child, .score-update span:last-child {
     display: block;
     font-size: 1.2rem;
     font-weight: 700;
@@ -516,51 +588,67 @@ SUMMARY SCREEN
     gap: 15px;
     justify-content: center;
     margin-top: 30px;
+    animation: fadeInUp 0.6s ease-out 0.6s both;
 }
 
 .summary-controls button {
-    padding: 14px 28px;
+    padding: 16px 32px;
     font-size: 1rem;
     font-weight: 700;
-    border-radius: 20px;
-    transition: all 0.3s ease;
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
 }
 
-#nextRoundBtn {
-    background: linear-gradient(135deg, #1dd1a1, #10ac84);
+.summary-controls button:nth-child(1) { animation-delay: 0.7s; }
+.summary-controls button:nth-child(2) { animation-delay: 0.8s; }
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-#endGameBtn {
-    background: linear-gradient(135deg, #5f27cd, #341f97);
-}
+#nextRoundBtn { background: linear-gradient(135deg, #1dd1a1, #10ac84); }
+#endGameBtn { background: linear-gradient(135deg, #5f27cd, #341f97); }
 
 /* ===============================
 STARTER SCREEN
-   =============================== */
+=============================== */
 
 .starter-content {
     text-align: center;
     max-width: 500px;
     margin: 0 auto;
+    animation: fadeIn 0.6s ease-out both;
 }
 
 #starterCard {
-    width: 300px;
-    height: 160px;
+    width: 320px;
+    height: 180px;
     border-radius: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 2.2rem;
+    font-size: 2.4rem;
     font-weight: 900;
-    background: linear-gradient(135deg, #feca57, #ff9f43);
+    background: linear-gradient(145deg, #ffcf65, #ffb347, #ffa030);
     margin: 40px auto;
     text-align: center;
-    box-shadow: 0 15px 40px rgba(254, 202, 87, 0.5);
-    animation: glowStarter 2s infinite alternate;
+    box-shadow: 0 20px 50px rgba(254, 202, 87, 0.4);
+    animation: glowStarter 2s infinite alternate, cardEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     overflow: hidden;
+}
+
+@keyframes cardEnter {
+    from { opacity: 0; transform: scale(0.5) rotate(-5deg); }
+    to { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+@keyframes glowStarter {
+    0%, 100% { box-shadow: 0 0 40px rgba(255, 223, 0, 0.5), 0 20px 50px rgba(254, 202, 87, 0.3); }
+    50% { box-shadow: 0 0 80px rgba(255, 223, 0, 0.8), 0 25px 60px rgba(254, 202, 87, 0.5); }
 }
 
 #starterCard::before {
@@ -573,6 +661,12 @@ STARTER SCREEN
     background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
     transform: rotate(45deg);
     animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
 }
 
 .starter-badge {
@@ -603,9 +697,6 @@ STARTER SCREEN
     letter-spacing: 1px;
     position: relative;
     overflow: hidden;
-}
-
-.action-btn {
     background: linear-gradient(135deg, #667eea, #764ba2);
     box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
     color: white;
@@ -642,90 +733,23 @@ STARTER SCREEN
     height: 120%;
 }
 
-
-/* ===============================
-ANIMATIONS
-=============================== */
-
-@keyframes glowStarter {
-    0%,
-    100% {
-        box-shadow: 0 0 40px rgba(255, 223, 0, 0.5);
-    }
-    50% {
-        box-shadow: 0 0 60px rgba(255, 223, 0, 0.8);
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: none;
-    }
-}
-
-@keyframes shimmer {
-    0% {
-        transform: translateX(-100%) translateY(-100%) rotate(45deg);
-        opacity: 0;
-    }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        transform: translateX(100%) translateY(100%) rotate(45deg);
-        opacity: 0;
-    }
-}
-
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-}
-
-
-/* Drag layer hover glow */
-
-#dragLayer:hover {
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
-    transition: box-shadow 0.3s ease-in-out;
-}
-
-
-/* Word Layer glow */
-
-#wordLayer span {
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-}
-
-
-/* Category Button Shadows */
-
-#categoryGrid button:active {
-    transform: scale(0.97);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
-}
-
-
 /* ===============================
 RESPONSIVE
 =============================== */
 
 @media(max-width:450px) {
+    .hero-section h1 {
+        font-size: 2rem;
+    }
     #wordLayer {
         font-size: 2.4rem;
         padding-bottom: 40px;
     }
     #dragLayer {
-        font-size: 1rem;
+        font-size: 0.9rem;
+    }
+    #dragLayer .hint-icon {
+        font-size: 2rem;
     }
     #categoryGrid button {
         padding: 14px;
@@ -735,5 +759,8 @@ RESPONSIVE
         width: 200px;
         height: 120px;
         font-size: 1.6rem;
+    }
+    #playerTitle {
+        font-size: 1.5rem;
     }
 }
