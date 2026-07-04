@@ -1,19 +1,33 @@
 "use client";
 
-"use client";
-
 import { useState, useCallback } from "react";
 import { AnimatePresence } from "framer-motion";
+import { LandingPage } from "@/components/landing-page";
 import { PlayerCountSelector } from "@/components/player-count-selector";
 import { CategorySelector } from "@/components/category-selector";
 import { WordReveal } from "@/components/word-reveal";
 import { RoundSummary } from "@/components/round-summary";
 import { StarterPicker } from "@/components/starter-picker";
-import { createInitialState, startGame, nextPlayer, getPlayerWord, getSpyPlayer, getSpyWord, getPlayerColor } from "@/lib/game-engine";
+import {
+  createInitialState,
+  startGame,
+  nextPlayer,
+  getPlayerWord,
+  getSpyPlayer,
+  getSpyWord,
+  getPlayerColor,
+} from "@/lib/game-engine";
 import type { GameState } from "@/types";
 
+type Page = "landing" | "players";
+
 export default function Home() {
+  const [page, setPage] = useState<Page>("landing");
   const [game, setGame] = useState<GameState | null>(null);
+
+  const handleStart = useCallback(() => {
+    setPage("players");
+  }, []);
 
   const handlePlayerSelect = useCallback((count: number) => {
     setGame(createInitialState(count));
@@ -26,13 +40,13 @@ export default function Home() {
   const handleNextPlayer = useCallback(() => {
     setGame((prev) => {
       if (!prev) return prev;
-      const next = nextPlayer(prev);
-      return next;
+      return nextPlayer(prev);
     });
   }, []);
 
   const handleNextRound = useCallback(() => {
     setGame(null);
+    setPage("landing");
   }, []);
 
   const handleEndGame = useCallback(() => {
@@ -42,7 +56,17 @@ export default function Home() {
     });
   }, []);
 
-  if (!game) {
+  // Landing page
+  if (page === "landing" && !game) {
+    return (
+      <AnimatePresence mode="wait">
+        <LandingPage key="landing" onStart={handleStart} />
+      </AnimatePresence>
+    );
+  }
+
+  // Player count selection
+  if (page === "players" && !game) {
     return (
       <AnimatePresence mode="wait">
         <PlayerCountSelector key="players" onSelect={handlePlayerSelect} />
@@ -50,8 +74,12 @@ export default function Home() {
     );
   }
 
+  // Game flow
+  if (!game) return null;
+
   const word = game.phase === "reveal" ? getPlayerWord(game) : "";
-  const playerColor = game.phase === "reveal" ? getPlayerColor(game.currentPlayer) : "";
+  const playerColor =
+    game.phase === "reveal" ? getPlayerColor(game.currentPlayer) : "";
 
   return (
     <AnimatePresence mode="wait">

@@ -1,5 +1,5 @@
 import { CATEGORIES, PLAYER_COLORS } from "./game-data";
-import type { GameState, GamePhase } from "@/types";
+import type { GameState } from "@/types";
 
 export function createInitialState(playerCount: number): GameState {
   return {
@@ -46,10 +46,6 @@ export function nextPlayer(state: GameState): GameState {
     return { ...state, phase: "summary" };
   }
   return { ...state, currentPlayer: next };
-}
-
-export function pickStarter(state: GameState): GameState {
-  return { ...state, phase: "starter" };
 }
 
 export function getPlayerColor(index: number): string {

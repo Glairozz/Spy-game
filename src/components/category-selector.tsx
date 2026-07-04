@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { BookOpen } from "lucide-react";
 import { getCategories } from "@/lib/game-engine";
 
 interface CategorySelectorProps {
@@ -11,41 +12,53 @@ export function CategorySelector({ onSelect }: CategorySelectorProps) {
   const categories = getCategories();
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="min-h-screen flex flex-col items-center justify-center p-6"
-    >
-      <motion.h2
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-2xl md:text-3xl font-black mb-8 text-gradient text-center"
-      >
-        Choose a Category
-      </motion.h2>
+    <div className="relative min-h-dvh flex flex-col items-center justify-center p-6 overflow-hidden">
+      <motion.div
+        className="absolute -top-32 -right-32 w-80 h-80 rounded-full opacity-10 blur-3xl"
+        style={{ background: "radial-gradient(circle, #f093fb, transparent)" }}
+        animate={{ scale: [1, 1.2, 1] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 w-full max-w-[800px]"
+        transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
+        className="relative z-10 text-center mb-8"
+      >
+        <motion.div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-[#f093fb]/20 to-[#667eea]/20 border border-white/10 mb-4">
+          <BookOpen className="w-6 h-6 text-[#f093fb]" />
+        </motion.div>
+        <h2 className="text-3xl md:text-4xl font-black mb-2">
+          <span className="text-gradient">Choose a Category</span>
+        </h2>
+        <p className="text-white/50 text-sm">Pick a topic for this round</p>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="relative z-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 w-full max-w-[640px]"
       >
         {categories.map((cat, i) => (
           <motion.button
             key={cat}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.05 * i, ease: [0.34, 1.56, 0.64, 1] }}
-            whileHover={{ scale: 1.03, y: -4 }}
-            whileTap={{ scale: 0.98 }}
+            transition={{
+              delay: 0.15 + i * 0.04,
+              ease: [0.34, 1.56, 0.64, 1],
+            }}
+            whileHover={{ scale: 1.03, y: -3 }}
+            whileTap={{ scale: 0.97 }}
             onClick={() => onSelect(cat)}
-            className="p-5 rounded-2xl bg-gradient-to-br from-[#22265a] to-[#181c44] text-white font-bold text-sm border border-white/5 shadow-lg hover:shadow-xl hover:shadow-[#667eea]/20 hover:from-[#2a2f6a] hover:to-[#1f2344] transition-all duration-300"
+            className="p-4 sm:p-5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-white font-semibold text-sm hover:bg-white/[0.1] hover:border-white/20 hover:shadow-lg hover:shadow-[#667eea]/10 transition-all duration-300"
           >
             {cat}
           </motion.button>
         ))}
       </motion.div>
-    </motion.div>
+    </div>
   );
 }

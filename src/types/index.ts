@@ -14,12 +14,7 @@ export interface GameState {
 }
 
 export type GamePhase =
-  | "players"
   | "category"
   | "reveal"
   | "summary"
   | "starter";
-
-export interface CategoryData {
-  [category: string]: string[];
-}

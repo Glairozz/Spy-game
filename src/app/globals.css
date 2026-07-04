@@ -32,8 +32,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    @apply bg-background text-foreground antialiased;
   }
 }
 
@@ -41,7 +40,45 @@
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[#667eea] via-[#764ba2] to-[#f093fb] bg-[length:300%_300%] animate-gradient-shift;
   }
-  .glass {
-    @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-lg;
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#f6d365] via-[#fda085] to-[#f6d365] bg-[length:200%_200%] animate-gradient-shift;
   }
+  .glass {
+    @apply bg-white/[0.04] backdrop-blur-xl border border-white/[0.06] shadow-xl;
+  }
+  .glass-strong {
+    @apply bg-white/[0.07] backdrop-blur-xl border border-white/[0.08] shadow-2xl;
+  }
+  .glow-blue {
+    box-shadow: 0 0 30px rgba(102, 126, 234, 0.15), 0 0 60px rgba(102, 126, 234, 0.05);
+  }
+  .glow-gold {
+    box-shadow: 0 0 30px rgba(254, 202, 87, 0.2), 0 0 60px rgba(254, 202, 87, 0.05);
+  }
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .bg-radial-gradient {
+    background: radial-gradient(ellipse at 50% 0%, rgba(102, 126, 234, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(118, 75, 162, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(240, 147, 251, 0.06) 0%, transparent 50%);
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }

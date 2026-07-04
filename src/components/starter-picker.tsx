@@ -2,8 +2,7 @@
 
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { Play } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Play, Shuffle } from "lucide-react";
 import { getRandomStarter } from "@/lib/game-engine";
 
 interface StarterPickerProps {
@@ -13,58 +12,82 @@ interface StarterPickerProps {
 
 export function StarterPicker({ playerCount, onPlayAgain }: StarterPickerProps) {
   const starter = useMemo(
-    () => getRandomStarter({ playerCount, players: [], category: null, roles: [], spyIndex: -1, currentPlayer: 0, phase: "starter" }),
+    () =>
+      getRandomStarter({
+        playerCount,
+        players: [],
+        category: null,
+        roles: [],
+        spyIndex: -1,
+        currentPlayer: 0,
+        phase: "starter",
+      }),
     [playerCount]
   );
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="min-h-dvh flex flex-col items-center justify-center p-6"
-    >
-      <motion.h2
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-2xl md:text-3xl font-black mb-8 text-center"
-      >
-        Who Starts?
-      </motion.h2>
+    <div className="relative min-h-dvh flex flex-col items-center justify-center p-6 overflow-hidden">
+      <motion.div
+        className="absolute -top-40 -right-40 w-96 h-96 rounded-full opacity-[0.06] blur-3xl"
+        style={{ background: "radial-gradient(circle, #f6d365, transparent)" }}
+        animate={{ scale: [1, 1.3, 1], rotate: [0, 45, 0] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.5, rotate: -5 }}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative z-10 text-center mb-8"
+      >
+        <motion.div
+          animate={{ rotate: [0, 10, -10, 0] }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-[#f6d365]/20 to-[#fda085]/20 border border-white/10 mb-4"
+        >
+          <Shuffle className="w-6 h-6 text-[#f6d365]" />
+        </motion.div>
+        <h2 className="text-3xl md:text-4xl font-black mb-2">
+          <span className="text-gradient-gold">Who Goes First?</span>
+        </h2>
+        <p className="text-white/50 text-sm">The dice have spoken</p>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.3, rotate: -10 }}
         animate={{ opacity: 1, scale: 1, rotate: 0 }}
-        transition={{ type: "spring", stiffness: 200, damping: 15 }}
-        className="relative w-[280px] sm:w-[320px] h-[160px] sm:h-[180px] rounded-3xl flex flex-col items-center justify-center bg-gradient-to-br from-[#ffcf65] via-[#ffb347] to-[#ffa030] shadow-2xl shadow-[#feca57]/40 overflow-hidden"
+        transition={{ type: "spring", stiffness: 150, damping: 12, delay: 0.2 }}
+        className="relative z-10 w-[260px] sm:w-[300px] aspect-[16/9] rounded-2xl flex flex-col items-center justify-center bg-gradient-to-br from-[#f6d365] via-[#fda085] to-[#f093fb] shadow-2xl shadow-[#f6d365]/30 overflow-hidden"
       >
         <div
           className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
           style={{ transform: "rotate(45deg)", width: "200%", height: "200%" }}
         />
         <motion.span
-          className="text-3xl md:text-4xl font-black text-white drop-shadow-lg"
+          className="relative text-3xl sm:text-4xl font-black text-white drop-shadow-lg"
           animate={{ scale: [1, 1.05, 1] }}
           transition={{ duration: 2, repeat: Infinity }}
         >
           Player {starter}
         </motion.span>
-        <span className="text-xs font-bold text-black/50 mt-2 tracking-widest uppercase">
-          GOES FIRST
+        <span className="relative text-[10px] font-bold text-white/60 mt-2 tracking-[0.2em] uppercase">
+          Goes First
         </span>
       </motion.div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="mt-10"
+        transition={{ delay: 0.5 }}
+        className="relative z-10 mt-10"
       >
-        <Button size="lg" onClick={onPlayAgain} className="gap-2 text-base px-10">
-          <Play className="w-5 h-5" />
+        <button
+          onClick={onPlayAgain}
+          className="px-10 py-4 rounded-xl bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white font-bold text-base shadow-lg shadow-[#667eea]/25 hover:shadow-xl hover:shadow-[#667eea]/40 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 flex items-center gap-3 border-none cursor-pointer"
+        >
+          <Play className="w-5 h-5 fill-current" />
           Play Again
-        </Button>
+        </button>
       </motion.div>
-    </motion.div>
+    </div>
   );
 }

@@ -2,8 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Eye } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Eye, EyeOff } from "lucide-react";
 
 interface WordRevealProps {
   currentPlayer: number;
@@ -13,7 +12,13 @@ interface WordRevealProps {
   onNext: () => void;
 }
 
-export function WordReveal({ currentPlayer, playerCount, word, color, onNext }: WordRevealProps) {
+export function WordReveal({
+  currentPlayer,
+  playerCount,
+  word,
+  color,
+  onNext,
+}: WordRevealProps) {
   const [revealed, setRevealed] = useState(false);
   const dragRef = useRef<HTMLDivElement>(null);
   const startY = useRef(0);
@@ -31,66 +36,83 @@ export function WordReveal({ currentPlayer, playerCount, word, color, onNext }: 
     startY.current = e.touches[0].clientY;
   }, []);
 
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (revealed || !dragRef.current) return;
-    const diff = startY.current - e.touches[0].clientY;
-    if (diff > 20) {
-      e.preventDefault();
-      dragRef.current.style.transform = `translateY(${-Math.min(diff, 300)}px)`;
-      dragRef.current.style.opacity = String(Math.max(0, 1 - diff / 300));
-    }
-  }, [revealed]);
+  const handleTouchMove = useCallback(
+    (e: React.TouchEvent) => {
+      if (revealed || !dragRef.current) return;
+      const diff = startY.current - e.touches[0].clientY;
+      if (diff > 20) {
+        e.preventDefault();
+        dragRef.current.style.transform = `translateY(${-Math.min(diff, 300)}px)`;
+        dragRef.current.style.opacity = String(Math.max(0, 1 - diff / 300));
+      }
+    },
+    [revealed]
+  );
 
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    if (revealed || !dragRef.current) return;
-    const diff = startY.current - e.changedTouches[0].clientY;
-    dragRef.current.style.transform = "";
-    dragRef.current.style.opacity = "";
-    if (diff > 60) {
-      setRevealed(true);
-    }
-  }, [revealed]);
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      if (revealed || !dragRef.current) return;
+      const diff = startY.current - e.changedTouches[0].clientY;
+      dragRef.current.style.transform = "";
+      dragRef.current.style.opacity = "";
+      if (diff > 60) {
+        setRevealed(true);
+      }
+    },
+    [revealed]
+  );
 
   const handleClick = useCallback(() => {
     setRevealed((r) => !r);
   }, []);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="min-h-dvh flex flex-col items-center justify-center p-4 md:p-6"
-    >
-      <motion.h2
+    <div className="relative min-h-dvh flex flex-col items-center justify-center p-4 md:p-6 overflow-hidden">
+      <motion.div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          background: `linear-gradient(135deg, ${color})`,
+        }}
+      />
+
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-2xl md:text-3xl font-black mb-6 text-center"
+        className="relative z-10 text-center mb-6"
       >
-        Player {currentPlayer + 1}
-      </motion.h2>
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.06] text-xs text-white/40 mb-4">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#1dd1a1] animate-pulse" />
+          Player {currentPlayer + 1} of {playerCount}
+        </div>
+        <h2 className="text-2xl md:text-3xl font-black">Your Word</h2>
+      </motion.div>
 
-      <div className="relative w-full max-w-[400px] h-[55vh] max-h-[500px]">
-        <div className="absolute inset-0 rounded-2xl flex items-center justify-center bg-gradient-to-br from-[#1e2157] to-[#151840] shadow-2xl border border-white/5">
+      <div className="relative z-10 w-full max-w-[400px] flex-1 max-h-[460px] min-h-[300px] mb-6">
+        {/* Word background */}
+        <div className="absolute inset-0 rounded-2xl flex items-center justify-center glass-strong">
           {revealed && (
             <motion.span
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
+              initial={{ scale: 0.4, opacity: 0, rotateX: 90 }}
+              animate={{ scale: 1, opacity: 1, rotateX: 0 }}
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
               className="text-4xl md:text-5xl font-black px-6 text-center break-words"
             >
-              <span className="bg-gradient-to-r from-[#ff6b6b] to-[#ee5a5a] bg-clip-text text-transparent animate-pulse-scale">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#ff6b6b] to-[#ee5a5a]">
                 {word}
               </span>
             </motion.span>
           )}
         </div>
 
+        {/* Drag overlay */}
         {!revealed && (
           <motion.div
             ref={dragRef}
             initial={false}
-            className="absolute inset-0 rounded-2xl flex flex-col items-center justify-center touch-none select-none border-2 border-white/10 shadow-2xl overflow-hidden cursor-pointer"
-            style={{ background: `linear-gradient(135deg, ${color})` }}
+            className="absolute inset-0 rounded-2xl flex flex-col items-center justify-center touch-none select-none border-2 border-white/[0.08] shadow-2xl overflow-hidden cursor-pointer"
+            style={{
+              background: `linear-gradient(135deg, ${color})`,
+            }}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
@@ -103,17 +125,30 @@ export function WordReveal({ currentPlayer, playerCount, word, color, onNext }: 
             />
 
             <motion.div
-              animate={{ y: [0, -10, 0] }}
+              animate={{ y: [0, -8, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              className="text-4xl mb-4"
+              className="flex flex-col items-center gap-4"
             >
-              <Eye className="w-10 h-10 md:w-12 md:h-12" />
+              <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                <Eye className="w-6 h-6 text-white/80" />
+              </div>
+              <span className="text-sm font-bold tracking-wider text-white/70">
+                Swipe up or tap to reveal
+              </span>
             </motion.div>
-
-            <span className="text-xs md:text-sm font-bold uppercase tracking-wider text-white/80 px-4 text-center">
-              Swipe up or tap to reveal
-            </span>
           </motion.div>
+        )}
+
+        {/* Toggle button when revealed */}
+        {revealed && (
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            onClick={handleClick}
+            className="absolute top-3 right-3 w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 transition-colors z-20"
+          >
+            <EyeOff className="w-4 h-4 text-white/60" />
+          </motion.button>
         )}
       </div>
 
@@ -121,17 +156,16 @@ export function WordReveal({ currentPlayer, playerCount, word, color, onNext }: 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
-        className="mt-6"
+        className="relative z-10"
       >
-        <Button
-          size="lg"
+        <button
           onClick={handleNext}
-          className="gap-2 min-w-[200px]"
+          className="relative px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white font-bold shadow-lg shadow-[#667eea]/25 hover:shadow-xl hover:shadow-[#667eea]/40 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 flex items-center gap-2 border-none cursor-pointer"
         >
           {currentPlayer + 1 >= playerCount ? "See Results" : "Next Player"}
           <ArrowRight className="w-4 h-4" />
-        </Button>
+        </button>
       </motion.div>
-    </motion.div>
+    </div>
   );
 }
