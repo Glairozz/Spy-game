@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { MessageCircle, ArrowRight, Check } from "lucide-react";
 import { getPlayerColor } from "@/lib/game-engine";
 
@@ -22,6 +22,7 @@ export function GamePlay({
   const allDone = currentTurn >= playerCount;
   const currentPlayerIndex = allDone ? -1 : turnOrder[currentTurn];
   const color = getPlayerColor(Math.max(currentPlayerIndex, 0));
+  const isLast = currentTurn === playerCount - 1;
 
   return (
     <div className="relative min-h-dvh flex flex-col p-6 overflow-hidden">
@@ -34,7 +35,7 @@ export function GamePlay({
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative z-10 glass-strong rounded-2xl p-4 mb-6"
+        className="relative z-10 glass-strong rounded-2xl p-4"
       >
         <div className="flex items-center justify-between gap-1">
           {turnOrder.map((pIdx, i) => {
@@ -68,7 +69,6 @@ export function GamePlay({
             );
           })}
         </div>
-
         {!allDone && (
           <div className="mt-3 pt-3 border-t border-white/[0.06] text-center">
             <span className="text-xs text-white/50">
@@ -81,70 +81,69 @@ export function GamePlay({
         )}
       </motion.div>
 
-      <div className="relative z-10 flex-1 flex flex-col">
-        <AnimatePresence mode="wait">
-          {!allDone ? (
-            <motion.div
-              key={`discuss-${currentTurn}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="flex-1 flex flex-col items-center justify-center"
-            >
-              <div className="glass-strong rounded-2xl p-8 text-center max-w-[400px] w-full">
+      {/* Main content */}
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center">
+        <motion.div
+          key={allDone ? "reveal" : `discuss-${currentTurn}`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-col items-center gap-8"
+        >
+          {!allDone && (
+            <div className="text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.06] border border-white/[0.1] text-xs text-white/50 mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#667eea] animate-pulse" />
+                Player {currentPlayerIndex + 1}&apos;s turn
+              </div>
+
+              <div className="relative">
                 <div
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
+                  className="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-5 shadow-2xl"
                   style={{
                     background: `linear-gradient(135deg, ${color})`,
                   }}
                 >
-                  <MessageCircle className="w-7 h-7 text-white" />
+                  <span className="text-3xl font-black text-white">
+                    {currentPlayerIndex + 1}
+                  </span>
                 </div>
-                <h2 className="text-2xl font-black mb-2">
-                  Player {currentPlayerIndex + 1}
-                </h2>
-                <p className="text-white/70 text-sm mb-6">
-                  Describe your word without saying it
-                </p>
-                <button
-                  onClick={onNextTurn}
-                  className="w-full px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white font-bold shadow-lg shadow-[#667eea]/25 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 border-none cursor-pointer"
-                >
-                  I&apos;m Done Describing
-                </button>
+                <motion.div
+                  className="absolute -inset-4 rounded-[40px] opacity-20 blur-xl"
+                  style={{
+                    background: `linear-gradient(135deg, ${color})`,
+                  }}
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
               </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="reveal"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex-1 flex flex-col items-center justify-center"
-            >
-              <div className="glass-strong rounded-2xl p-8 text-center max-w-[400px] w-full">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#1dd1a1]/20 to-[#10ac84]/20 flex items-center justify-center mx-auto mb-4">
-                  <Check className="w-7 h-7 text-[#1dd1a1]" />
-                </div>
-                <h2 className="text-2xl font-black mb-2">
-                  All Players Have Spoken
-                </h2>
-                <p className="text-white/60 text-sm mb-2">
-                  Time to find out who the spy was
-                </p>
-                <p className="text-white/40 text-xs mb-6">
-                  Everyone has finished describing their word
-                </p>
-                <button
-                  onClick={onEndRound}
-                  className="w-full px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#f6d365] to-[#fda085] text-white font-bold shadow-lg shadow-[#f6d365]/25 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 flex items-center justify-center gap-2 border-none cursor-pointer"
-                >
-                  Reveal the Spy
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </motion.div>
+
+              <motion.p
+                className="text-lg font-bold text-white/90 tracking-wide"
+                animate={{ opacity: [0.6, 1, 0.6] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                Discussing
+              </motion.p>
+            </div>
           )}
-        </AnimatePresence>
+
+          {/* Button */}
+          <motion.button
+            onClick={allDone ? onEndRound : onNextTurn}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white font-bold shadow-lg shadow-[#667eea]/25 hover:shadow-xl hover:shadow-[#667eea]/40 transition-all duration-200 border-none cursor-pointer flex items-center gap-2"
+          >
+            {allDone ? (
+              <>
+                Reveal the Spy
+                <ArrowRight className="w-4 h-4" />
+              </>
+            ) : (
+              <>Done discussing?</>
+            )}
+          </motion.button>
+        </motion.div>
       </div>
     </div>
   );
