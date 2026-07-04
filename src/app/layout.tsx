@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="min-h-dvh overflow-x-hidden bg-grid bg-radial-gradient">
+      <body className="min-h-dvh overflow-x-hidden">
         <AnimateWrapper>{children}</AnimateWrapper>
       </body>
     </html>
