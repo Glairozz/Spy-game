@@ -46,9 +46,8 @@ export function RoundSummary({
         transition={{ delay: 0.2, type: "spring", stiffness: 200, damping: 20 }}
         className="relative z-10 w-full max-w-[420px] space-y-4"
       >
-        {/* Spy reveal card */}
         <div className="glass-strong rounded-2xl p-6 sm:p-8 text-center">
-          <p className="text-sm font-semibold text-[#f6d365] mb-4 tracking-wide uppercase">
+          <p className="text-sm font-bold text-[#f6d365] mb-4 tracking-wide uppercase">
             The Spy Revealed
           </p>
           <div
@@ -58,28 +57,27 @@ export function RoundSummary({
             }}
           >
             <p className="text-2xl font-black mb-1">{spyPlayer}</p>
-            <p className="text-sm text-white/70">
+            <p className="text-sm text-white/90">
               had the word{" "}
               <span className="font-bold text-[#f6d365]">&quot;{spyWord}&quot;</span>
             </p>
           </div>
         </div>
 
-        {/* Stats card */}
         <div className="glass-strong rounded-2xl p-5">
           <div className="flex justify-around">
             <div className="text-center">
-              <div className="w-10 h-10 rounded-xl bg-white/[0.04] flex items-center justify-center mx-auto mb-2">
+              <div className="w-10 h-10 rounded-xl bg-white/[0.06] flex items-center justify-center mx-auto mb-2">
                 <Clock className="w-5 h-5 text-[#f6d365]" />
               </div>
-              <p className="text-xs text-white/40 mb-0.5">Time</p>
+              <p className="text-xs text-white/70 mb-0.5">Time</p>
               <p className="text-lg font-bold text-[#f6d365]">0:00</p>
             </div>
             <div className="text-center">
-              <div className="w-10 h-10 rounded-xl bg-white/[0.04] flex items-center justify-center mx-auto mb-2">
+              <div className="w-10 h-10 rounded-xl bg-white/[0.06] flex items-center justify-center mx-auto mb-2">
                 <Trophy className="w-5 h-5 text-[#1dd1a1]" />
               </div>
-              <p className="text-xs text-white/40 mb-0.5">Points</p>
+              <p className="text-xs text-white/70 mb-0.5">Points</p>
               <p className="text-lg font-bold text-[#1dd1a1]">100</p>
             </div>
           </div>
@@ -101,7 +99,7 @@ export function RoundSummary({
         </button>
         <button
           onClick={onEndGame}
-          className="flex-1 px-6 py-3.5 rounded-xl bg-white/[0.06] border border-white/[0.1] text-white/80 font-bold hover:bg-white/[0.1] hover:text-white active:scale-[0.97] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
+          className="flex-1 px-6 py-3.5 rounded-xl bg-white/[0.08] border border-white/[0.15] text-white font-bold hover:bg-white/[0.14] hover:border-white/25 active:scale-[0.97] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
         >
           <Home className="w-4 h-4" />
           End Game

@@ -80,7 +80,7 @@ export function WordReveal({
         animate={{ opacity: 1, y: 0 }}
         className="relative z-10 text-center mb-6"
       >
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.06] text-xs text-white/40 mb-4">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.06] border border-white/[0.1] text-xs text-white/70 mb-4">
           <span className="w-1.5 h-1.5 rounded-full bg-[#1dd1a1] animate-pulse" />
           Player {currentPlayer + 1} of {playerCount}
         </div>
@@ -88,7 +88,6 @@ export function WordReveal({
       </motion.div>
 
       <div className="relative z-10 w-full max-w-[400px] flex-1 max-h-[460px] min-h-[300px] mb-6">
-        {/* Word background */}
         <div className="absolute inset-0 rounded-2xl flex items-center justify-center glass-strong">
           {revealed && (
             <motion.span
@@ -104,12 +103,11 @@ export function WordReveal({
           )}
         </div>
 
-        {/* Drag overlay */}
         {!revealed && (
           <motion.div
             ref={dragRef}
             initial={false}
-            className="absolute inset-0 rounded-2xl flex flex-col items-center justify-center touch-none select-none border-2 border-white/[0.08] shadow-2xl overflow-hidden cursor-pointer"
+            className="absolute inset-0 rounded-2xl flex flex-col items-center justify-center touch-none select-none border-2 border-white/[0.1] shadow-2xl overflow-hidden cursor-pointer"
             style={{
               background: `linear-gradient(135deg, ${color})`,
             }}
@@ -130,16 +128,15 @@ export function WordReveal({
               className="flex flex-col items-center gap-4"
             >
               <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center">
-                <Eye className="w-6 h-6 text-white/80" />
+                <Eye className="w-6 h-6 text-white" />
               </div>
-              <span className="text-sm font-bold tracking-wider text-white/70">
+              <span className="text-sm font-bold tracking-wider text-white">
                 Swipe up or tap to reveal
               </span>
             </motion.div>
           </motion.div>
         )}
 
-        {/* Toggle button when revealed */}
         {revealed && (
           <motion.button
             initial={{ opacity: 0 }}
@@ -147,7 +144,7 @@ export function WordReveal({
             onClick={handleClick}
             className="absolute top-3 right-3 w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 transition-colors z-20"
           >
-            <EyeOff className="w-4 h-4 text-white/60" />
+            <EyeOff className="w-4 h-4 text-white" />
           </motion.button>
         )}
       </div>

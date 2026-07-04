@@ -17,7 +17,6 @@ const FEATURES = [
 export function LandingPage({ onStart }: LandingPageProps) {
   return (
     <div className="relative min-h-dvh flex flex-col items-center justify-center overflow-hidden p-6">
-      {/* Animated orbs */}
       <motion.div
         className="absolute -top-40 -right-40 w-96 h-96 rounded-full opacity-20 blur-3xl"
         style={{ background: "radial-gradient(circle, #667eea, transparent)" }}
@@ -37,7 +36,6 @@ export function LandingPage({ onStart }: LandingPageProps) {
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Floating decorative dots */}
       {Array.from({ length: 20 }).map((_, i) => (
         <motion.div
           key={i}
@@ -59,14 +57,12 @@ export function LandingPage({ onStart }: LandingPageProps) {
         />
       ))}
 
-      {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: [0.34, 1.56, 0.64, 1] }}
         className="relative z-10 text-center mb-12"
       >
-        {/* Spy icon */}
         <motion.div
           className="mb-8 inline-flex"
           animate={{ y: [0, -10, 0] }}
@@ -86,7 +82,6 @@ export function LandingPage({ onStart }: LandingPageProps) {
           </div>
         </motion.div>
 
-        {/* Title */}
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-black mb-4 tracking-tight">
           <span className="text-gradient">Who is the</span>
           <br />
@@ -95,13 +90,12 @@ export function LandingPage({ onStart }: LandingPageProps) {
           </span>
         </h1>
 
-        <p className="text-lg md:text-xl text-white/50 max-w-md mx-auto leading-relaxed">
+        <p className="text-lg md:text-xl text-white/80 max-w-md mx-auto leading-relaxed">
           A social deduction party game where one player has a different word.
           Can you spot them?
         </p>
       </motion.div>
 
-      {/* Feature Cards */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -117,13 +111,12 @@ export function LandingPage({ onStart }: LandingPageProps) {
             className="glass-strong rounded-2xl p-4 text-center group hover:bg-white/[0.1] transition-colors duration-300"
           >
             <feature.icon className="w-5 h-5 mx-auto mb-2 text-[#667eea] group-hover:text-[#f093fb] transition-colors" />
-            <p className="text-sm font-bold text-white/90">{feature.label}</p>
-            <p className="text-xs text-white/40">{feature.desc}</p>
+            <p className="text-sm font-bold text-white">{feature.label}</p>
+            <p className="text-xs text-white/70">{feature.desc}</p>
           </motion.div>
         ))}
       </motion.div>
 
-      {/* Start Button */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -149,12 +142,11 @@ export function LandingPage({ onStart }: LandingPageProps) {
         </motion.button>
       </motion.div>
 
-      {/* Footer */}
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2 }}
-        className="absolute bottom-6 text-xs text-white/20 z-10"
+        className="absolute bottom-6 text-xs text-white/50 z-10"
       >
         Pass the phone to start &bull; Play with friends
       </motion.p>

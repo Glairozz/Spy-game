@@ -49,7 +49,7 @@ export function StarterPicker({ playerCount, onPlayAgain }: StarterPickerProps) 
         <h2 className="text-3xl md:text-4xl font-black mb-2">
           <span className="text-gradient-gold">Who Goes First?</span>
         </h2>
-        <p className="text-white/50 text-sm">The dice have spoken</p>
+        <p className="text-white/80 text-sm">The dice have spoken</p>
       </motion.div>
 
       <motion.div
@@ -69,7 +69,7 @@ export function StarterPicker({ playerCount, onPlayAgain }: StarterPickerProps) 
         >
           Player {starter}
         </motion.span>
-        <span className="relative text-[10px] font-bold text-white/60 mt-2 tracking-[0.2em] uppercase">
+        <span className="relative text-[10px] font-bold text-white/80 mt-2 tracking-[0.2em] uppercase">
           Goes First
         </span>
       </motion.div>

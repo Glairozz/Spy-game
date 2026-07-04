@@ -26,13 +26,13 @@ export function CategorySelector({ onSelect }: CategorySelectorProps) {
         transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
         className="relative z-10 text-center mb-8"
       >
-        <motion.div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-[#f093fb]/20 to-[#667eea]/20 border border-white/10 mb-4">
+        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-[#f093fb]/20 to-[#667eea]/20 border border-white/10 mb-4">
           <BookOpen className="w-6 h-6 text-[#f093fb]" />
-        </motion.div>
+        </div>
         <h2 className="text-3xl md:text-4xl font-black mb-2">
           <span className="text-gradient">Choose a Category</span>
         </h2>
-        <p className="text-white/50 text-sm">Pick a topic for this round</p>
+        <p className="text-white/80 text-sm">Pick a topic for this round</p>
       </motion.div>
 
       <motion.div
@@ -53,7 +53,7 @@ export function CategorySelector({ onSelect }: CategorySelectorProps) {
             whileHover={{ scale: 1.03, y: -3 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => onSelect(cat)}
-            className="p-4 sm:p-5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-white font-semibold text-sm hover:bg-white/[0.1] hover:border-white/20 hover:shadow-lg hover:shadow-[#667eea]/10 transition-all duration-300"
+            className="p-4 sm:p-5 rounded-xl bg-white/[0.06] border border-white/[0.1] text-white font-semibold text-sm hover:bg-white/[0.12] hover:border-white/25 hover:shadow-lg hover:shadow-[#667eea]/10 transition-all duration-300"
           >
             {cat}
           </motion.button>
