@@ -1,0 +1,33 @@
+export const CATEGORIES: Record<string, string[]> = {
+  Food: ["Pizza", "Burger", "Sushi", "Pasta", "Steak", "Salad", "Ramen", "Ice Cream", "Taco", "Sandwich", "Fried Chicken", "Dumpling", "Hotdog", "Curry", "Donut", "Pancakes", "Waffles", "Popcorn", "Chocolate", "Cheese", "Bacon", "Eggs", "Toast", "Soup", "Noodles", "Cake", "Cookies", "Pie", "Bread", "Rice", "Chips", "Pretzels", "Cereal", "Yogurt", "Fruit", "Vegetables"],
+  Places: ["Beach", "Airport", "Mall", "School", "Hospital", "Park", "Hotel", "Cinema", "Restaurant", "Library", "Museum", "Cafe", "Gym", "Office", "Station", "Stadium", "Theater", "Church", "Temple", "Zoo", "Aquarium", "Amusement Park", "Forest", "Mountain", "Desert", "Island", "City", "Town", "Village", "Farm", "Factory", "Warehouse", "Bank", "Post Office", "Pharmacy", "Gas Station"],
+  Animals: ["Dog", "Cat", "Horse", "Cow", "Lion", "Tiger", "Elephant", "Monkey", "Bird", "Fish", "Snake", "Rabbit", "Bear", "Wolf", "Deer", "Fox", "Eagle", "Owl", "Dolphin", "Whale", "Shark", "Penguin", "Koala", "Kangaroo", "Giraffe", "Zebra", "Crocodile", "Turtle", "Frog", "Butterfly", "Bee", "Ant", "Spider", "Scorpion", "Lizard", "Hamster"],
+  Movies: ["Action", "Comedy", "Drama", "Horror", "Romance", "Sci-Fi", "Fantasy", "Thriller", "Mystery", "Adventure", "Animation", "Musical", "War", "Crime", "Western", "Documentary", "Biography", "Family", "Historical", "Psychological", "Superhero", "Martial Arts", "Romantic Comedy", "Disaster", "Sports", "Political", "Legal", "Medical", "Police", "Spy", "Noir", "Silent", "Independent", "Foreign"],
+  Jobs: ["Doctor", "Teacher", "Engineer", "Chef", "Pilot", "Farmer", "Nurse", "Driver", "Artist", "Actor", "Programmer", "Designer", "Electrician", "Mechanic", "Police", "Firefighter", "Scientist", "Architect", "Lawyer", "Journalist", "Photographer", "Musician", "Writer", "Accountant", "Manager", "Salesperson", "Receptionist", "Consultant", "Therapist", "Pharmacist", "Veterinarian", "Plumber", "Carpenter", "Barber", "Hairdresser", "Makeup Artist"],
+  Sports: ["Football", "Basketball", "Tennis", "Baseball", "Volleyball", "Cricket", "Rugby", "Boxing", "Swimming", "Cycling", "Running", "Badminton", "Golf", "Hockey", "Skating", "Skiing", "Snowboarding", "Surfing", "Diving", "Gymnastics", "Wrestling", "Martial Arts", "Archery", "Fencing", "Rowing", "Sailing", "Climbing", "Bowling", "Billiards", "Darts", "Chess", "Checkers", "Table Tennis", "Squash", "Handball", "Lacrosse"],
+  Objects: ["Phone", "Laptop", "Chair", "Table", "Bottle", "Bag", "Watch", "Shoes", "Headphones", "Camera", "Book", "Pen", "Wallet", "Keys", "Glasses", "Umbrella", "Backpack", "Pillow", "Blanket", "Mirror", "Clock", "Lamp", "Remote", "Keyboard", "Mouse", "Monitor", "Speaker", "Microphone", "Television", "Refrigerator", "Microwave", "Toaster", "Blender", "Vacuum", "Scissors", "Ruler", "Calculator"],
+  Emotions: ["Happy", "Sad", "Angry", "Excited", "Nervous", "Scared", "Relaxed", "Proud", "Jealous", "Confident", "Lonely", "Hopeful", "Calm", "Tired", "Surprised", "Confused", "Frustrated", "Grateful", "Disappointed", "Embarrassed", "Guilty", "Ashamed", "Amused", "Bored", "Curious", "Envious", "Suspicious", "Worried", "Relieved", "Satisfied", "Content", "Ecstatic", "Miserable", "Anxious", "Peaceful", "Energetic"],
+  Activities: ["Dancing", "Singing", "Cooking", "Reading", "Swimming", "Running", "Gaming", "Shopping", "Traveling", "Drawing", "Writing", "Cleaning", "Hiking", "Fishing", "Yoga", "Meditating", "Photography", "Gardening", "Knitting", "Painting", "Sculpting", "Acting", "Directing", "Producing", "Editing", "Researching", "Analyzing", "Calculating", "Measuring", "Building", "Constructing", "Designing", "Planning", "Organizing", "Decorating", "Celebrating"],
+  Technology: ["AI", "Robotics", "VR", "AR", "Blockchain", "Internet", "Smartphone", "Computer", "Drone", "3D Printing", "Cloud", "Cybersecurity", "Software", "Hardware", "Automation", "Machine Learning", "Deep Learning", "Neural Networks", "IoT", "5G", "Quantum Computing", "Augmented Reality", "Virtual Reality", "Mixed Reality", "Big Data", "Analytics", "DevOps", "Agile", "Scrum", "Kanban", "Git", "GitHub", "Docker", "Kubernetes", "Microservices", "Serverless"],
+  Nature: ["Tree", "Flower", "Grass", "River", "Mountain", "Ocean", "Lake", "Forest", "Desert", "Rain", "Snow", "Wind", "Sun", "Moon", "Stars", "Cloud", "Rainbow", "Lightning", "Thunder", "Fog", "Mist", "Hail", "Tornado", "Hurricane", "Earthquake", "Volcano", "Avalanche", "Flood", "Drought", "Erosion", "Sediment", "Mineral", "Rock", "Crystal", "Gemstone", "Fossil"],
+  Colors: ["Red", "Blue", "Green", "Yellow", "Orange", "Purple", "Pink", "Brown", "Black", "White", "Gray", "Silver", "Gold", "Cyan", "Magenta", "Indigo", "Violet", "Turquoise", "Lime", "Navy", "Maroon", "Teal", "Olive", "Coral", "Beige", "Ivory", "Cream", "Charcoal", "Slate", "Copper", "Bronze", "Platinum", "Pearl", "Ruby", "Emerald"],
+  Music: ["Rock", "Pop", "Jazz", "Classical", "Hip Hop", "Country", "Electronic", "Reggae", "Blues", "Metal", "Punk", "Folk", "R&B", "Soul", "Funk", "Disco", "Techno", "House", "Trance", "Dubstep", "Ambient", "Instrumental", "Vocal", "Acoustic", "Electric", "Synthesizer", "Guitar", "Piano", "Drums", "Bass", "Violin", "Flute", "Saxophone", "Trumpet", "Clarinet"],
+  Vehicles: ["Car", "Bicycle", "Motorcycle", "Bus", "Train", "Airplane", "Helicopter", "Boat", "Ship", "Submarine", "Rocket", "Truck", "Van", "SUV", "Sedan", "Convertible", "Coupe", "Hatchback", "Limousine", "Taxi", "Ambulance", "Police Car", "Fire Truck", "Garbage Truck", "Scooter", "Skateboard", "Roller Skates", "Jet Ski", "Snowmobile", "ATV", "Golf Cart", "Forklift", "Crane", "Bulldozer", "Excavator", "Tractor"],
+};
+
+export const PLAYER_COLORS = [
+  "from-[#ff6b6b] to-[#c44569]",
+  "from-[#feca57] to-[#ff9f43]",
+  "from-[#1dd1a1] to-[#10ac84]",
+  "from-[#54a0ff] to-[#2e86de]",
+  "from-[#5f27cd] to-[#341f97]",
+  "from-[#00d2d3] to-[#01a3a4]",
+  "from-[#ff9ff3] to-[#f368e0]",
+  "from-[#48dbfb] to-[#0abde3]",
+  "from-[#ff6348] to-[#c44569]",
+  "from-[#ffa502] to-[#ff6348]",
+  "from-[#ff4757] to-[#c44569]",
+  "from-[#2ed573] to-[#1e90ff]",
+  "from-[#a55eea] to-[#8854d0]",
+  "from-[#20bf6b] to-[#0fb9b1]",
+];
