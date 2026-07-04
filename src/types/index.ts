@@ -3,11 +3,6 @@ export interface Player {
   score: number;
 }
 
-export interface Vote {
-  voterIndex: number;
-  targetIndex: number;
-}
-
 export interface GameState {
   playerCount: number;
   players: Player[];
@@ -20,8 +15,6 @@ export interface GameState {
   turnDirection: "clockwise" | "counterclockwise";
   turnOrder: number[];
   currentTurn: number;
-  votes: Vote[];
-  gamePlayPhase: "discussion" | "voting" | "review";
 }
 
 export type GamePhase =

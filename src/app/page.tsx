@@ -8,7 +8,7 @@ import { CategorySelector } from "@/components/category-selector";
 import { WordReveal } from "@/components/word-reveal";
 import { TurnRandomizer } from "@/components/turn-randomizer";
 import { GamePlay } from "@/components/game-play";
-import { VotingResults } from "@/components/voting-results";
+import { SpyReveal } from "@/components/spy-reveal";
 import {
   createInitialState,
   startGame,
@@ -18,9 +18,6 @@ import {
   endRound,
   getPlayerWord,
   getPlayerColor,
-  getTurnPlayer,
-  getVoteResults,
-  getMostVotedPlayer,
 } from "@/lib/game-engine";
 import type { GameState } from "@/types";
 
@@ -56,15 +53,12 @@ export default function Home() {
     });
   }, []);
 
-  const handleNextTurn = useCallback(
-    (voteTarget: number) => {
-      setGame((prev) => {
-        if (!prev) return prev;
-        return nextTurn(prev, voteTarget);
-      });
-    },
-    []
-  );
+  const handleNextTurn = useCallback(() => {
+    setGame((prev) => {
+      if (!prev) return prev;
+      return nextTurn(prev);
+    });
+  }, []);
 
   const handleEndRound = useCallback(() => {
     setGame((prev) => {
@@ -78,7 +72,6 @@ export default function Home() {
     setPage("landing");
   }, []);
 
-  // Landing page
   if (page === "landing" && !game) {
     return (
       <AnimatePresence mode="wait">
@@ -87,7 +80,6 @@ export default function Home() {
     );
   }
 
-  // Player count selection
   if (page === "players" && !game) {
     return (
       <AnimatePresence mode="wait">
@@ -96,7 +88,6 @@ export default function Home() {
     );
   }
 
-  // Game flow
   if (!game) return null;
 
   const word = game.phase === "reveal" ? getPlayerWord(game) : "";
@@ -134,20 +125,16 @@ export default function Home() {
           turnOrder={game.turnOrder}
           currentTurn={game.currentTurn}
           playerCount={game.playerCount}
-          votes={game.votes}
-          gamePlayPhase={game.gamePlayPhase}
           onNextTurn={handleNextTurn}
           onEndRound={handleEndRound}
         />
       )}
 
       {game.phase === "results" && (
-        <VotingResults
+        <SpyReveal
           key="results"
           spyIndex={game.spyIndex}
-          mostVotedIndex={getMostVotedPlayer(game)}
-          voteResults={getVoteResults(game)}
-          playerCount={game.playerCount}
+          roles={game.roles}
           onPlayAgain={handlePlayAgain}
         />
       )}
