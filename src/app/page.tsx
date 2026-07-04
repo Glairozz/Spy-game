@@ -6,16 +6,21 @@ import { LandingPage } from "@/components/landing-page";
 import { PlayerCountSelector } from "@/components/player-count-selector";
 import { CategorySelector } from "@/components/category-selector";
 import { WordReveal } from "@/components/word-reveal";
-import { RoundSummary } from "@/components/round-summary";
-import { StarterPicker } from "@/components/starter-picker";
+import { TurnRandomizer } from "@/components/turn-randomizer";
+import { GamePlay } from "@/components/game-play";
+import { VotingResults } from "@/components/voting-results";
 import {
   createInitialState,
   startGame,
-  nextPlayer,
+  nextRevealPlayer,
+  startPlaying,
+  nextTurn,
+  endRound,
   getPlayerWord,
-  getSpyPlayer,
-  getSpyWord,
   getPlayerColor,
+  getTurnPlayer,
+  getVoteResults,
+  getMostVotedPlayer,
 } from "@/lib/game-engine";
 import type { GameState } from "@/types";
 
@@ -37,23 +42,40 @@ export default function Home() {
     setGame((prev) => (prev ? startGame(prev, category) : prev));
   }, []);
 
-  const handleNextPlayer = useCallback(() => {
+  const handleNextReveal = useCallback(() => {
     setGame((prev) => {
       if (!prev) return prev;
-      return nextPlayer(prev);
+      return nextRevealPlayer(prev);
     });
   }, []);
 
-  const handleNextRound = useCallback(() => {
+  const handleStartRound = useCallback(() => {
+    setGame((prev) => {
+      if (!prev) return prev;
+      return startPlaying(prev);
+    });
+  }, []);
+
+  const handleNextTurn = useCallback(
+    (voteTarget: number) => {
+      setGame((prev) => {
+        if (!prev) return prev;
+        return nextTurn(prev, voteTarget);
+      });
+    },
+    []
+  );
+
+  const handleEndRound = useCallback(() => {
+    setGame((prev) => {
+      if (!prev) return prev;
+      return endRound(prev);
+    });
+  }, []);
+
+  const handlePlayAgain = useCallback(() => {
     setGame(null);
     setPage("landing");
-  }, []);
-
-  const handleEndGame = useCallback(() => {
-    setGame((prev) => {
-      if (!prev) return prev;
-      return { ...prev, phase: "starter" };
-    });
   }, []);
 
   // Landing page
@@ -94,26 +116,39 @@ export default function Home() {
           playerCount={game.playerCount}
           word={word}
           color={playerColor}
-          onNext={handleNextPlayer}
+          onNext={handleNextReveal}
         />
       )}
 
-      {game.phase === "summary" && (
-        <RoundSummary
-          key="summary"
-          spyPlayer={getSpyPlayer(game)}
-          spyWord={getSpyWord(game)}
-          spyColor={getPlayerColor(game.spyIndex)}
-          onNextRound={handleNextRound}
-          onEndGame={handleEndGame}
-        />
-      )}
-
-      {game.phase === "starter" && (
-        <StarterPicker
-          key="starter"
+      {game.phase === "randomizer" && (
+        <TurnRandomizer
+          key="randomizer"
           playerCount={game.playerCount}
-          onPlayAgain={handleNextRound}
+          onStart={handleStartRound}
+        />
+      )}
+
+      {game.phase === "playing" && (
+        <GamePlay
+          key={`playing-${game.currentTurn}`}
+          turnOrder={game.turnOrder}
+          currentTurn={game.currentTurn}
+          playerCount={game.playerCount}
+          votes={game.votes}
+          gamePlayPhase={game.gamePlayPhase}
+          onNextTurn={handleNextTurn}
+          onEndRound={handleEndRound}
+        />
+      )}
+
+      {game.phase === "results" && (
+        <VotingResults
+          key="results"
+          spyIndex={game.spyIndex}
+          mostVotedIndex={getMostVotedPlayer(game)}
+          voteResults={getVoteResults(game)}
+          playerCount={game.playerCount}
+          onPlayAgain={handlePlayAgain}
         />
       )}
     </AnimatePresence>
