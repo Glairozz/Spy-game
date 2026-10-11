@@ -1,6 +1,9 @@
 import { CATEGORIES, PLAYER_COLORS } from "./game-data";
 import type { GameState } from "@/types";
 
+export const IMPOSTER_WORD = "IMPOSTER";
+export type TurnDirection = "clockwise" | "counterclockwise";
+
 export function createInitialState(playerCount: number): GameState {
   return {
     playerCount,
@@ -10,6 +13,7 @@ export function createInitialState(playerCount: number): GameState {
     })),
     category: null,
     roles: [],
+    clueWord: "",
     spyIndex: -1,
     currentPlayer: 0,
     phase: "category",
@@ -20,23 +24,38 @@ export function createInitialState(playerCount: number): GameState {
   };
 }
 
+/**
+ * Applies the chosen category and initializes the round data:
+ * - Picks the secret word shared by all normal players.
+ * - Picks a clue word assigned ONLY to the Imposter.
+ * - Assigns a single Imposter role (the existing configuration).
+ * - Starts the private pass-the-phone card-distribution stage.
+ *
+ * All assignments are stored in the round state and never regenerated
+ * while navigating between stages.
+ */
 export function startGame(state: GameState, category: string): GameState {
   const words = CATEGORIES[category];
-  if (!words) return state;
+  if (!words || words.length === 0 || state.playerCount < 1) return state;
 
-  const sameWord = words[Math.floor(Math.random() * words.length)];
-  let differentWord: string;
-  do {
-    differentWord = words[Math.floor(Math.random() * words.length)];
-  } while (differentWord === sameWord);
+  const secretWord = words[Math.floor(Math.random() * words.length)];
+  let clueWord: string;
+  if (words.length > 1) {
+    do {
+      clueWord = words[Math.floor(Math.random() * words.length)];
+    } while (clueWord === secretWord);
+  } else {
+    clueWord = secretWord;
+  }
 
-  const roles = Array(state.playerCount).fill(sameWord);
   const spyIndex = Math.floor(Math.random() * state.playerCount);
-  roles[spyIndex] = differentWord;
+  const roles = Array<string>(state.playerCount).fill(secretWord);
+  roles[spyIndex] = IMPOSTER_WORD;
 
   return {
     ...state,
     category,
+    clueWord,
     roles,
     spyIndex,
     currentPlayer: 0,
@@ -44,24 +63,36 @@ export function startGame(state: GameState, category: string): GameState {
   };
 }
 
+/**
+ * Advances to the next player's private card. After the last player has
+ * viewed their card, moves to the starting-player and rotation setup.
+ */
 export function nextRevealPlayer(state: GameState): GameState {
   const next = state.currentPlayer + 1;
   if (next >= state.playerCount) {
-    return setupTurnOrder(state);
+    return { ...state, phase: "randomizer" };
   }
   return { ...state, currentPlayer: next };
 }
 
-function setupTurnOrder(state: GameState): GameState {
-  const starterIndex = Math.floor(Math.random() * state.playerCount);
-  const direction: "clockwise" | "counterclockwise" =
-    Math.random() < 0.5 ? "clockwise" : "counterclockwise";
+/**
+ * Starts the discussion using the player-selected starting player and
+ * rotation direction. Calculates the speaking order and saves both
+ * settings to the round state. Does nothing until "Start Round" is
+ * pressed on the setup screen.
+ */
+export function startRound(
+  state: GameState,
+  starterIndex: number,
+  direction: TurnDirection
+): GameState {
+  const count = state.playerCount;
+  if (count < 1 || starterIndex < 0 || starterIndex >= count) return state;
 
   const order: number[] = [];
-  for (let i = 0; i < state.playerCount; i++) {
+  for (let i = 0; i < count; i++) {
     const step = direction === "clockwise" ? i : -i;
-    const idx = (starterIndex + step + state.playerCount) % state.playerCount;
-    order.push(idx);
+    order.push((starterIndex + step + count) % count);
   }
 
   return {
@@ -70,20 +101,8 @@ function setupTurnOrder(state: GameState): GameState {
     turnDirection: direction,
     turnOrder: order,
     currentTurn: 0,
-    phase: "randomizer",
+    phase: "playing",
   };
-}
-
-export function startPlaying(state: GameState): GameState {
-  return { ...state, phase: "playing" };
-}
-
-export function nextTurn(state: GameState): GameState {
-  const next = state.currentTurn + 1;
-  if (next >= state.playerCount) {
-    return { ...state, currentTurn: next };
-  }
-  return { ...state, currentTurn: next };
 }
 
 export function endRound(state: GameState): GameState {
@@ -98,8 +117,17 @@ export function getPlayerWord(state: GameState): string {
   return state.roles[state.currentPlayer] ?? "";
 }
 
-export function getSpyWord(state: GameState): string {
-  return state.roles[state.spyIndex] ?? "";
+/** All players whose assigned role is the Imposter (derived from roles). */
+export function getImposterIndices(state: GameState): number[] {
+  return state.roles.reduce<number[]>((acc, role, i) => {
+    if (role === IMPOSTER_WORD) acc.push(i);
+    return acc;
+  }, []);
+}
+
+/** The secret word shared by the normal (non-Imposter) players. */
+export function getSecretWord(state: GameState): string {
+  return state.roles.find((role) => role !== IMPOSTER_WORD) ?? "";
 }
 
 export function getTurnPlayer(state: GameState): number {

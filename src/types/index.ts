@@ -8,6 +8,7 @@ export interface GameState {
   players: Player[];
   category: string | null;
   roles: string[];
+  clueWord: string;
   spyIndex: number;
   currentPlayer: number;
   phase: GamePhase;

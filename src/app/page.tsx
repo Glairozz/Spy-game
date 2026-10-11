@@ -13,11 +13,14 @@ import {
   createInitialState,
   startGame,
   nextRevealPlayer,
-  startPlaying,
-  nextTurn,
+  startRound,
   endRound,
   getPlayerWord,
   getPlayerColor,
+  getImposterIndices,
+  getSecretWord,
+  IMPOSTER_WORD,
+  type TurnDirection,
 } from "@/lib/game-engine";
 import type { GameState } from "@/types";
 
@@ -46,19 +49,15 @@ export default function Home() {
     });
   }, []);
 
-  const handleStartRound = useCallback(() => {
-    setGame((prev) => {
-      if (!prev) return prev;
-      return startPlaying(prev);
-    });
-  }, []);
-
-  const handleNextTurn = useCallback(() => {
-    setGame((prev) => {
-      if (!prev) return prev;
-      return nextTurn(prev);
-    });
-  }, []);
+  const handleStartRound = useCallback(
+    (starterIndex: number, direction: TurnDirection) => {
+      setGame((prev) => {
+        if (!prev) return prev;
+        return startRound(prev, starterIndex, direction);
+      });
+    },
+    []
+  );
 
   const handleEndRound = useCallback(() => {
     setGame((prev) => {
@@ -91,8 +90,13 @@ export default function Home() {
   if (!game) return null;
 
   const word = game.phase === "reveal" ? getPlayerWord(game) : "";
+  const isImposter = word === IMPOSTER_WORD;
   const playerColor =
     game.phase === "reveal" ? getPlayerColor(game.currentPlayer) : "";
+  const clueWord = game.clueWord ?? "";
+  const spyIndices =
+    game.phase === "results" ? getImposterIndices(game) : [];
+  const secretWord = game.phase === "results" ? getSecretWord(game) : "";
 
   return (
     <AnimatePresence mode="wait">
@@ -106,6 +110,7 @@ export default function Home() {
           currentPlayer={game.currentPlayer}
           playerCount={game.playerCount}
           word={word}
+          clueWord={isImposter ? clueWord : ""}
           color={playerColor}
           onNext={handleNextReveal}
         />
@@ -121,11 +126,8 @@ export default function Home() {
 
       {game.phase === "playing" && (
         <GamePlay
-          key={`playing-${game.currentTurn}`}
+          key="playing"
           turnOrder={game.turnOrder}
-          currentTurn={game.currentTurn}
-          playerCount={game.playerCount}
-          onNextTurn={handleNextTurn}
           onEndRound={handleEndRound}
         />
       )}
@@ -133,8 +135,10 @@ export default function Home() {
       {game.phase === "results" && (
         <SpyReveal
           key="results"
-          spyIndex={game.spyIndex}
+          spyIndices={spyIndices}
           roles={game.roles}
+          secretWord={secretWord}
+          clueWord={clueWord}
           onPlayAgain={handlePlayAgain}
         />
       )}

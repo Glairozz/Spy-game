@@ -1,17 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Users } from "lucide-react";
+import { Users, Minus, Plus, ArrowRight } from "lucide-react";
 
-const PLAYER_COUNTS = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+const MIN_PLAYERS = 3;
+const MAX_PLAYERS = 14;
 
 interface PlayerCountSelectorProps {
   onSelect: (count: number) => void;
 }
 
 export function PlayerCountSelector({ onSelect }: PlayerCountSelectorProps) {
-  const [selected, setSelected] = useState<number | null>(null);
+  const [count, setCount] = useState(4);
+
+  const decrease = useCallback(() => {
+    setCount((c) => Math.max(MIN_PLAYERS, c - 1));
+  }, []);
+
+  const increase = useCallback(() => {
+    setCount((c) => Math.min(MAX_PLAYERS, c + 1));
+  }, []);
+
+  const handleNext = useCallback(() => {
+    if (count >= MIN_PLAYERS && count <= MAX_PLAYERS) {
+      onSelect(count);
+    }
+  }, [count, onSelect]);
 
   return (
     <div className="relative min-h-dvh flex flex-col items-center justify-center p-6 overflow-hidden">
@@ -49,44 +64,66 @@ export function PlayerCountSelector({ onSelect }: PlayerCountSelectorProps) {
         transition={{ duration: 0.8, delay: 0.2, ease: [0.34, 1.56, 0.64, 1] }}
         className="relative z-10 glass-strong rounded-3xl p-6 sm:p-8 w-full max-w-[560px]"
       >
-        <div className="grid grid-cols-4 sm:grid-cols-6 gap-2.5">
-          {PLAYER_COUNTS.map((count, i) => (
-            <motion.button
+        <p className="text-xs font-bold text-white/50 tracking-widest uppercase text-center mb-5">
+          Players
+        </p>
+
+        <div className="flex items-center justify-center gap-6 sm:gap-8">
+          <button
+            onClick={decrease}
+            aria-label="Decrease players"
+            disabled={count <= MIN_PLAYERS}
+            className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center bg-white/[0.06] border border-white/[0.1] text-white hover:bg-white/[0.12] hover:border-white/25 active:scale-90 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/[0.06] disabled:hover:border-white/[0.1] transition-all duration-200 cursor-pointer"
+          >
+            <Minus className="w-6 h-6" />
+          </button>
+
+          <div className="text-center">
+            <motion.div
               key={count}
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                delay: 0.3 + i * 0.04,
-                type: "spring",
-                stiffness: 300,
-                damping: 15,
-              }}
-              whileHover={{ scale: 1.08, y: -4 }}
-              whileTap={{ scale: 0.93 }}
-              onClick={() => {
-                setSelected(count);
-                setTimeout(() => onSelect(count), 150);
-              }}
-              className={`aspect-square rounded-xl font-black text-lg sm:text-xl transition-all duration-200 border-2 ${
-                selected === count
-                  ? "bg-gradient-to-br from-[#667eea] to-[#764ba2] border-white/30 shadow-lg shadow-[#667eea]/40 scale-105 text-white"
-                  : "bg-white/[0.06] border-white/[0.1] hover:border-white/30 hover:bg-white/[0.12] text-white hover:text-white"
-              }`}
+              initial={{ scale: 0.7, opacity: 0.4 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 18 }}
+              className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-br from-[#667eea] to-[#764ba2] flex items-center justify-center shadow-xl shadow-[#667eea]/30"
             >
-              {count}
-            </motion.button>
-          ))}
+              <span className="text-5xl sm:text-6xl font-black text-white">
+                {count}
+              </span>
+            </motion.div>
+            <p className="text-sm font-bold text-white/80 mt-3">
+              {count} player{count === 1 ? "" : "s"}
+            </p>
+          </div>
+
+          <button
+            onClick={increase}
+            aria-label="Increase players"
+            disabled={count >= MAX_PLAYERS}
+            className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center bg-white/[0.06] border border-white/[0.1] text-white hover:bg-white/[0.12] hover:border-white/25 active:scale-90 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/[0.06] disabled:hover:border-white/[0.1] transition-all duration-200 cursor-pointer"
+          >
+            <Plus className="w-6 h-6" />
+          </button>
         </div>
+
+        <p className="text-center text-xs text-white/50 mt-5">
+          {MIN_PLAYERS}–{MAX_PLAYERS} players
+        </p>
       </motion.div>
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8 }}
-        className="relative z-10 mt-6 text-xs text-white/50"
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="relative z-10 mt-8 w-full max-w-[560px]"
       >
-        Choose wisely &mdash; the spy is among you
-      </motion.p>
+        <button
+          onClick={handleNext}
+          className="w-full sm:w-auto sm:px-12 flex items-center justify-center gap-2 px-10 py-4 rounded-xl bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white font-bold text-base shadow-lg shadow-[#667eea]/25 hover:shadow-xl hover:shadow-[#667eea]/40 hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 border-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#667eea] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b0e1a]"
+        >
+          Next
+          <ArrowRight className="w-4 h-4" />
+        </button>
+      </motion.div>
     </div>
   );
 }

@@ -1,18 +1,25 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Target, Eye } from "lucide-react";
-import { getPlayerColor, getSpyWord } from "@/lib/game-engine";
+import { Target, Eye, Sparkles } from "lucide-react";
+import { getPlayerColor, IMPOSTER_WORD } from "@/lib/game-engine";
 
 interface SpyRevealProps {
-  spyIndex: number;
+  spyIndices: number[];
   roles: string[];
+  secretWord: string;
+  clueWord: string;
   onPlayAgain: () => void;
 }
 
-export function SpyReveal({ spyIndex, roles, onPlayAgain }: SpyRevealProps) {
-  const spyColor = getPlayerColor(spyIndex);
-  const spyWord = roles[spyIndex] ?? "";
+export function SpyReveal({
+  spyIndices,
+  roles,
+  secretWord,
+  clueWord,
+  onPlayAgain,
+}: SpyRevealProps) {
+  const isPlural = spyIndices.length > 1;
 
   return (
     <div className="relative min-h-dvh flex flex-col items-center justify-center p-6 overflow-hidden">
@@ -32,7 +39,7 @@ export function SpyReveal({ spyIndex, roles, onPlayAgain }: SpyRevealProps) {
           <Target className="w-6 h-6 text-[#f6d365]" />
         </div>
         <h2 className="text-3xl md:text-4xl font-black">
-          <span className="text-gradient-gold">The Spy Revealed</span>
+          <span className="text-gradient-gold">The Imposter Is...</span>
         </h2>
       </motion.div>
 
@@ -45,21 +52,47 @@ export function SpyReveal({ spyIndex, roles, onPlayAgain }: SpyRevealProps) {
         <div className="glass-strong rounded-2xl p-8 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/[0.1] text-xs text-white/60 mb-6">
             <Eye className="w-3.5 h-3.5" />
-            The spy had a different word
+            {isPlural ? "The imposters had no secret word" : "The imposter had no secret word"}
           </div>
 
-          <div
-            className="p-8 rounded-2xl shadow-xl mb-6"
-            style={{ background: `linear-gradient(135deg, ${spyColor})` }}
-          >
-            <p className="text-3xl sm:text-4xl font-black mb-2">
-              Player {spyIndex + 1}
-            </p>
-            <p className="text-sm text-white/80">
-              was the spy with the word:{" "}
-              <span className="font-bold text-[#f6d365]">&quot;{spyWord}&quot;</span>
-            </p>
-          </div>
+          {spyIndices.map((idx) => (
+            <div
+              key={idx}
+              className="p-8 rounded-2xl shadow-xl mb-4"
+              style={{
+                background: `linear-gradient(135deg, ${getPlayerColor(idx)})`,
+              }}
+            >
+              <p className="text-3xl sm:text-4xl font-black mb-1">
+                {roles.length > 0 ? `Player ${idx + 1}` : "Player"}
+              </p>
+              <p className="text-sm text-white/80">
+                was the imposter with the word{" "}
+                <span className="font-bold text-[#f6d365]">
+                  &quot;{IMPOSTER_WORD}&quot;
+                </span>
+              </p>
+            </div>
+          ))}
+
+          {secretWord && (
+            <div className="mt-2 pt-4 border-t border-white/10">
+              <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-white/50 mb-2">
+                <Sparkles className="w-3.5 h-3.5" />
+                Round words
+              </div>
+              <p className="text-sm text-white/60">
+                Secret word:{" "}
+                <span className="font-bold text-white">&quot;{secretWord}&quot;</span>
+              </p>
+              {clueWord && (
+                <p className="text-sm text-white/60 mt-1">
+                  Clue word:{" "}
+                  <span className="font-bold text-[#f6d365]">&quot;{clueWord}&quot;</span>
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </motion.div>
 
